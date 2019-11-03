@@ -11,16 +11,16 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 })
 export class AppComponent {
   public appPages = [
-    {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
-    },
-    {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
-    }
+    { title: 'Dashboard',  url: '/home', image: "assets/icon/home.png" },
+    { title: 'Add Detail',  url: '/add-detail', image: "assets/icon/add.png" },
+    { title: 'Secure List',  url: '/list', image: "assets/icon/list.png" },
+    { title: 'Change Password',  url: '/change-password', image: "assets/icon/change_password.png" },
+    { title: 'Share',  url: '/contact-us', image: "assets/icon/share.png" },
+    { title: 'Contact Us',  url: '/contact-us', image: "assets/icon/contactus.png" },
+    { title: 'About Us',  url: '/about-us', image: "assets/icon/aboutus.png" },
+    { title: 'Legal Terms',  url: '/legal-terms', image: "assets/icon/legal.png" },
+    { title: 'FAQ',  url: '/faq', image: "assets/icon/faq.png" },
+    { title: 'Settings',  url: '/settings', image: "assets/icon/settings.png" },    
   ];
 
   constructor(

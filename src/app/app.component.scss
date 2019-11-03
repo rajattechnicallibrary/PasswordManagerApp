@@ -1,0 +1,672 @@
+// App Styles
+// ----------------------------------------------------------------------------
+// Put style rules here that you want to apply to the entire application. These 
+// styles are for the entire app and not just one component. Additionally, this 
+// file can hold Sass mixins, functions, and placeholder classes to be imported 
+// and used throughout the application.
+.icon-set{
+    margin: 3%;
+}
+
+.item-inner{
+    border: none;
+    backface-visibility: initial;    
+}
+
+  
+  .cstmFF{
+      font-family: 'SFUIDisplay-Regular'!important;
+  }
+  
+              .toolbar-background {
+                 background: #dc1150;
+              }
+              
+              .toolbar-title {
+                 // //color:map-get($colors, white);
+                  font-family: serif;
+                  font-weight: bold;
+              }
+              
+              .list-md .item-block .item-inner {
+                  border: none;
+                  margin-left: 3%!important;
+              }
+              
+              .item-md ion-icon[item-left],
+              .item-md ion-icon[item-right],
+              .item-md ion-icon[item-start],
+              .item-md ion-icon[item-end] {
+                  margin: 3% 0;
+              }
+              
+              @font-face {
+                  font-family: SFUI;
+                  src: url(../assets/fonts/SF-UI-Display-Medium.ttf) format("ttf");
+                  font-weight: 200
+              }
+              
+              body {
+                 // font-family: SFUI !important;
+               //  font-family: 'SFUIDisplay-Medium'!important;
+              }
+              
+              .required:after {
+                  content: '*';
+              //    //color:map-get($colors, cartColor);
+                  padding-left: 5px;
+              }
+              
+              .disable_icon {
+                  color: #59b3d0;
+              }
+              /***********************************SKELTON*****************START************************/
+              /*****Skelton CSS for two line with small & long******Start******/
+              
+              .skeltonForTwoline:empty {
+                  margin: auto;
+                  width: 100%;
+                  height: 105px;
+                  /* change height to see repeat-y behavior */
+                  background-image: radial-gradient( circle 0px at 50px 50px, lightgray 99%, transparent 0), linear-gradient( 100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient( lightgray 13px, transparent 0), linear-gradient( lightgray 13px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 0px 0px, /* circle */
+                  50px 40px, /* highlight */
+                  95% 50px, 55% 50px;
+                  background-position: 0 0, /* circle */
+                  0 0, /* highlight */
+                  5px 10px, 5px 35px;
+                  animation: shine .8s infinite;
+              }
+              
+              @keyframes shine {
+                  to {
+                      background-position: 0 0, 100% 20px, /* move highlight to right */
+                      5px 10px, 5px 35px;
+                  }
+              }
+              
+              .defaultSkelton:empty {
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                //  //background-//color:map-get($colors, white);
+                  background-image: radial-gradient( circle 36px at 44% 27%, #eee 82%, transparent 0), linear-gradient( 100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%), /* linear-gradient( lightgray 13px, transparent 0 ), */
+                  linear-gradient( #eee 9px, transparent 0), linear-gradient( #eee 9px, transparent 0), linear-gradient( #EEE 9px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 36% 24%, /* circle */
+                  43% 24%, /* 85% 200px, */
+                  26% 24%, 63% 24%, 63% 24%;
+                  background-position: 0px 8px, /* circle */
+                  0 0, /* 120px 0, */
+                  42% 10px, 84% 30px, 84% 50px;
+                  animation: shinePlist .8s infinite;
+              }
+              
+              @keyframes shinePlist {
+                  to {
+                      background-position: 0 8px, 100% 0, /*move highlight to right */
+                      /* 				120px 0, */
+                      42% 10px, 84% 30px, 84% 50px;
+                  }
+              }
+              /*****Skelton CSS for two line with small & long******End******/
+              /*************************Skeleton for 2 column 1 circle*************Start*************/
+              
+              .skeleton2Col1circle:empty {
+                  -webkit-animation: shine1 1s infinite;
+                  animation: shine1 1s infinite;
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                 // //background-//color:map-get($colors, white);
+                  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%), radial-gradient( circle 14px at 24px 12px, #f2f2f1 82%, transparent 0), linear-gradient(#f2f2f1 23px, transparent 0), linear-gradient(#f2f2f1 23px, transparent 0), linear-gradient(#f2f2f1 2px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 30px 58px, 38px 58px, 110px 58px, 110px 58px, 343px 58px;
+                  background-position: 0 0, 10px 15px, 70px 15px, 227px 15px, 10px 53px;
+              }
+              
+              @keyframes shine1 {
+                  to {
+                      background-position: 100% 0, 10px 15px, 70px 15px, 227px 15px, 10px 53px;
+                  }
+              }
+              /*******************************Skeleton for 8 column with 6row*************************************/
+              
+              .skeleton8Col6Row:empty {
+                  -webkit-animation: shine2 1s infinite;
+                  animation: shine2 1s infinite;
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                //  //background-//color:map-get($colors, white);
+                  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(250, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(#f2f2f1 23px, transparent 0), linear-gradient(#f2f2f1 23px, transparent 0), linear-gradient(#f2f2f1 2px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 52px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 52px, transparent 0), linear-gradient(#f2f2f1 9px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 30px 300px, 133px 300px, 133px 300px, 343px 300px, 133px 300px, 75px 300px, 133px 300px, 75px 300px, 92% 150px;
+                  background-position: 0 0, 26px 15px, 210px 15px, 10px 44px, 26px 60px, 210px 60px, 26px 60px, 210px 60px, 46% 120px;
+              }
+              
+              @keyframes shine2 {
+                  to {
+                      background-position: 100% 0, 26px 15px, 210px 15px, 10px 44px, 26px 60px, 210px 60px, 46% 120px;
+                  }
+              }
+              /***************************Skeleton for 9 column************************/
+              
+              .skeleton9Col:empty {
+                  margin: 0;
+                  width: 100%;
+               //   //background-//color:map-get($colors, white);
+                  height: 100%;
+                  background-image: linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0);
+                  background-repeat: no-repeat;
+                  background-size: 96px 37px, 96px 37px, 70px 37px, 96px 37px, 96px 37px, 70px 37px, 96px 37px, 96px 37px, 70px 37px;
+                  background-position: 15px 11px, 138px 11px, 261px 11px, 15px 45px, 138px 45px, 261px 46px, 15px 80px, 138px 81px, 261px 82px;
+              }
+              /***************************Skeleton for 9 column and 4 row(no-repeat)************************/
+              
+              .skeleton9Col4Row:empty {
+                  margin: 0;
+                  width: 100%;
+                  //background-//color:map-get($colors, white);
+                  height: 100%;
+                  background-image: linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 20px, transparent 0), linear-gradient(#efefef 9px, transparent 0);
+                  background-repeat: no-repeat;
+                  background-size: 96px 37px, 96px 37px, 70px 37px, 96px 37px, 96px 37px, 70px 37px, 96px 37px, 96px 37px, 70px 37px, 364px 37px;
+                  background-position: 15px 11px, 138px 11px, 261px 11px, 15px 45px, 138px 45px, 261px 45px, 15px 80px, 138px 80px, 261px 80px, 11px 114px;
+              }
+              /***************************Skeleton for 2 column and 4 row(no-repeat)************************/
+              
+              .skeleton2Col4Row:empty {
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                  //background-//color:map-get($colors, white);
+                  background-image: linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 20px, transparent 0), linear-gradient(#d3d3d3 9px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 125px 150px, 125px 150px, 110px 150px, 94px 150px, 110px 150px, 94px 150px, 110px 150px, 94px 150px, 343px 150px;
+                  background-position: 10px 15px, 200px 15px, 10px 50px, 261px 50px, 10px 86px, 261px 86px, 10px 120px, 261px 120px, 10px 120px;
+              }
+              /**************Skeleton for 9 column and border************************/
+              /**********Without Animation********************/
+              
+              .skeleton9Col:empty {
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                  //background-//color:map-get($colors, white);
+                  background-image: linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 4px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 110px 137px, 110px 137px, 94px 137px, 110px 137px, 110px 137px, 94px 137px, 110px 137px, 110px 137px, 94px 137px, 343px 137px;
+                  background-position: 10px 15px, 137px 15px, 261px 15px, 10px 50px, 137px 50px, 261px 50px, 10px 86px, 137px 86px, 261px 86px, 10px 120px;
+              }
+              /**********With Animation********************/
+              
+              .skeleton9ColAnimation:empty {
+                  -webkit-animation: shine 1s infinite;
+                  animation: shine 1s infinite;
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                  //background-//color:map-get($colors, white);
+                  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 9px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 30px 150px, 30% 150px, 30% 150px, 25% 150px, 30% 150px, 30% 150px, 25% 150px, 30% 150px, 30% 150px, 25% 150px, 92% 150px;
+                  background-position: 0 0, 4% 15px, 52% 15px, 94% 15px, 4% 50px, 52% 50px, 94% 50px, 4% 86px, 52% 86px, 94% 86px, 46% 120px;
+              }
+              
+              @keyframes shine {
+                  to {
+                      background-position: 100% 0, 4% 15px, 52% 15px, 94% 15px, 4% 50px, 52% 50px, 94% 50px, 4% 86px, 52% 86px, 94% 86px, 46% 120px;
+                  }
+              }
+              /***********************************************************************************/
+                /**************Skeleton for 2 column and 4 row************************/
+              /**********Without Animation********************/
+              
+              .skeleton2Col:empty {
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                  //background-color: #fff;
+                  background-image: linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0), linear-gradient(#f2f2f1 20px, transparent 0),linear-gradient(#f2f2f1 25px, transparent 0),linear-gradient(#f2f2f1 4px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 110px 190px, 110px 190px, 110px 190px, 110px 190px, 110px 190px, 224px 190px, 94px 190px, 343px 190px;
+                  background-position: 10px 15px, 196px 15px, 10px 45px, 196px 45px, 10px 86px, 10px 115px, 255px 150px, 10px 184px;
+              }
+               /**********With Animation********************/
+              
+               .skeleton2ColAnimation:empty {
+                  -webkit-animation: shine3 1s infinite;
+                  animation: shine3 1s infinite;
+                  margin: auto;
+                  width: 100%;
+                  height: 100%;
+                  //background-//color:map-get($colors, white);
+                  background-image: linear-gradient(100deg, 
+                                      rgba(255, 255, 255, 0), 
+                                      rgba(255, 255, 255, 0.5) 50%, 
+                                      rgba(255, 255, 255, 0) 80%),
+                                    linear-gradient(#f2f2f1 20px, transparent 0),
+                                    linear-gradient(#f2f2f1 20px, transparent 0),
+                                    linear-gradient(#f2f2f1 20px, transparent 0),
+                                    linear-gradient(#f2f2f1 20px, transparent 0), 
+                                    linear-gradient(#f2f2f1 20px, transparent 0), 
+                                    linear-gradient(#f2f2f1 20px, transparent 0),
+                                    linear-gradient(#f2f2f1 25px, transparent 0),
+                                    linear-gradient(#f2f2f1 4px, transparent 0);
+                  background-repeat: repeat-y;
+                  background-size: 30px 150px,
+                                   30% 180px, 30% 180px, 
+                                   30% 180px, 30% 180px, 
+                                   30% 180px, 
+                                   60% 180px, 
+                                   24% 180px, 
+                                   100% 180px;
+                  background-position:0 0,  
+                                      4% 15px, 78% 15px,  
+                                      4% 42px, 78% 42px,  
+                                      4% 80px,  
+                                      7% 108px,  
+                                      95% 133px,  
+                                      4% 168px;
+              }
+              
+              @keyframes shine3 {
+                  to {
+                      background-position: 100% 0,
+                                           4% 15px, 78% 15px,  
+                                           4% 42px, 78% 42px,  
+                                           4% 80px,  
+                                           7% 108px,  
+                                           95% 133px,  
+                                           4% 168px;
+                  }
+              }
+              /*******************************************************************/
+              /**************Skeleton for 2 column and 6row************************/
+                    /**********With Animation********************/
+              
+                    .skeleton2Col6RowAnimation:empty {
+                      -webkit-animation: shine4 1s infinite;
+                      animation: shine4 1s infinite;
+                      margin: auto;
+                      width: 100%;
+                      height: 100%;
+                      //background-//color:map-get($colors, white);
+                      background-image: linear-gradient(100deg, 
+                                          rgba(255, 255, 255, 0), 
+                                          rgba(255, 255, 255, 0.5) 50%, 
+                                          rgba(255, 255, 255, 0) 80%),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0), 
+                                        linear-gradient(#f2f2f1 20px, transparent 0), 
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 4px, transparent 0);
+                      background-repeat: repeat-y;
+                      background-size: 30px 150px, 
+                                       30% 212px, 30% 212px,  
+                                       30% 212px, 30% 212px,  
+                                       30% 212px,  
+                                       60% 212px,  
+                                       30% 212px, 30% 212px, 
+                                       30% 212px, 30% 212px, 
+                                       100% 212px;
+                      background-position: 0 0,  
+                                           4% 15px, 78% 15px,  
+                                           4% 42px, 78% 42px,  
+                                           4% 80px,  
+                                           7% 106px,  
+                                           4% 144px, 78% 144px, 
+                                           4% 170px, 78% 170px, 
+                                           4% 202px;
+                  }
+                  
+                  @keyframes shine4 {
+                      to {
+                          background-position: 100% 0,
+                                               4% 15px, 78% 15px,  
+                                               4% 42px, 78% 42px,  
+                                               4% 80px,  
+                                               7% 106px,  
+                                               4% 144px, 78% 144px, 
+                                               4% 170px, 78% 170px, 
+                                               4% 202px;
+                      }
+                  }
+                  /*******************************************************************/
+                  /**************Skeleton for 2 column and 4row************************/
+                    /**********With Animation********************/
+              
+                    .skeleton2Col4RowAnimation:empty {
+                      -webkit-animation: shine5 1s infinite;
+                      animation: shine5 1s infinite;
+                      margin: auto;
+                      width: 100%;
+                      height: 100%;
+                      //background-//color:map-get($colors, white);
+                      background-image: linear-gradient(100deg, 
+                                          rgba(255, 255, 255, 0), 
+                                          rgba(255, 255, 255, 0.5) 50%, 
+                                          rgba(255, 255, 255, 0) 80%),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 2px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0), 
+                                        linear-gradient(#f2f2f1 55px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 55px, transparent 0),
+                                        linear-gradient(#f2f2f1 20px, transparent 0),
+                                        linear-gradient(#f2f2f1 55px, transparent 0),
+                                        linear-gradient(#f2f2f1 4px, transparent 0);
+                      background-repeat: repeat-y;
+                      background-size: 30px 150px, 
+                                       30% 280px, 30% 280px,  
+                                       98% 280px, 
+                                       35% 280px, 20% 280px,  
+                                       35% 280px, 20% 280px, 
+                                       35% 280px, 20% 280px, 
+                                       100% 280px;
+                      background-position: 0 0,  
+                                           4% 15px, 78% 15px,  
+                                           4% 42px, 
+                                           4% 62px, 68% 60px,
+                                           4% 132px, 68% 130px, 
+                                           4% 200px, 68% 200px, 
+                                           4% 266px;
+                  }
+                  
+                  @keyframes shine5 {
+                      to {
+                          background-position: 100% 0,
+                                               4% 15px, 78% 15px,  
+                                               4% 42px, 
+                                               4% 62px, 68% 60px,
+                                               4% 132px, 68% 130px, 
+                                               4% 200px, 68% 200px, 
+                                               4% 266px;
+                      }
+                  }
+                  /*******************************************************************/
+  
+              /*****************Button Activated****************************/
+              
+              .btnGreen.activated {
+                  //background-//color:map-get($colors, footerBtn);
+              }
+              /*****************Button Activated in InformationPage****************************/
+              .registerBtn.activated {
+                  //background-//color:map-get($colors, registerBtn);
+              }
+  
+  //class using to show no record found message
+              .no-record-found{
+                  text-align: center;
+                  padding: 2%;
+                  font-size: 1.3em;
+                  margin: auto;
+                  font-weight: 500;
+                  margin-top:3%
+              }
+  
+              .network-error-layer{
+                  position: absolute;
+                  height: 129%;
+                  width: 100%;
+                  z-index: 1;
+                  background: rgba(255,255,255,0.5);
+              }
+  
+              /*****************item input border-color****************************/
+  
+              .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner{
+              //    //border-bottom-//color:map-get($colors, borderLine);
+                  box-shadow: none;
+              }
+          
+              .item-md.item-input.item-input-has-focus .item-inner,
+              .item-md.item-input.input-has-focus .item-inner {
+                   //border-bottom-//color:map-get($colors, borderLine);
+                  // -webkit-box-shadow: inset 0 -1px 0 0 map-get($colors, borderLine);
+                //   box-shadow: inset 0 -1px 0 0 map-get($colors, borderLine);
+          }
+               .list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child{
+                  //border-bottom-//color:map-get($colors, borderLine);
+                 // -webkit-box-shadow: inset 0 -1px 0 0 map-get($colors, borderLine);
+                //  box-shadow: inset 0 -1px 0 0 map-get($colors, borderLine);
+          }
+           .list-md .item-input.item-input-has-focus:last-child,.list-md .item-input.input-has-focus:last-child {
+                  //border-bottom-//color:map-get($colors, borderLine);
+                 // -webkit-box-shadow: inset 0 -1px 0 0 map-get($colors, borderLine);
+               //   box-shadow: inset 0 -1px 0 0 map-get($colors, borderLine);
+          }
+          
+          /****************************************************/  
+          .bar-button-md:first-child{
+              font-size: 7vw;
+             
+             // //color:map-get($colors, white);
+          }
+          .toolbar-md{
+              min-height: 48px;
+          }
+          .toolbar-title{
+              font-size: 1.3em;
+              font-weight: 500;
+              text-align: center;
+              font-family: 'SFUIDisplay-Medium';
+          }
+  
+  
+          /**********Error toast custmization******************Start************************/
+          .toast-top
+          {
+              padding: 3% 0;
+              padding-right: 2%;
+          }
+      
+           .toast-button{
+              //background-//color:map-get($colors, footerBtn);
+          }
+  
+          .toast-md .toast-message{
+              width: 82%!important;
+            }
+            
+            .toast-bottom
+            {
+              padding: 1% 0;
+              padding-right: 2%;
+          }
+           /**********Error toast custmization******************End************************/
+           
+           /*********************searchbar*******************************/  
+          .bar-button-md:first-child{
+              font-size: 7vw;
+            //  //color:map-get($colors, white);
+          }
+          .toolbar-md{
+              min-height: 48px;
+          }
+          .toolbar-title{
+              font-size: 1.3em;
+              font-weight: 500;
+              text-align: center;
+              font-family: 'SFUIDisplay-Medium';
+          }
+          .searchbar-md {
+              padding: 0 !important;
+          }
+          .searchbar-md .searchbar-input {
+              padding: 6px 17px;
+              font-size: 4.3vw;
+          }
+         .searchbar-md .searchbar-search-icon,  .searchbar-md .searchbar-md-cancel {
+              left: 91%;
+          }
+            /********************searchIcon hide******************************/
+          .searchbar-has-value.searchbar-has-focus .searchbar-search-icon {
+          display: none;
+        }
+        /********************modal Cross Icon onclick color*****************************/
+        .bar-button-default-md:hover:not(.disable-hover){
+           // //color:map-get($colors, white);
+        }
+  
+  
+        /**************************alert css(dropdown)**********************************/
+        .select-alert .alert-wrapper {
+          -webkit-box-shadow: none;
+          box-shadow:none;
+       }
+        .select-alert .alert-head{
+            padding: 0;
+        }
+        .select-alert .alert-title{
+          font-size: 1.3em;
+          border-radius: 0px;
+          margin: auto;
+          font-weight: 500;
+          font-family: 'SFUIDisplay-Medium';
+        //   background: map-get($colors, heading);
+        //   //color:map-get($colors, white);
+          padding: 6%;
+          text-align: center;
+        }
+          
+        .select-alert .alert-radio-icon{
+         // border-//color:map-get($colors, footerBtn);
+        }
+        .select-alert .alert-radio-inner{
+          //background-//color:map-get($colors, footerBtn);
+        }
+        .select-alert .alert-radio-label{
+     //     //color:map-get($colors, black);
+          font-size: 4.5vw;
+        }
+        .select-alert [aria-checked=true] .alert-radio-icon{
+       //   border-//color:map-get($colors, footerBtn);
+        }
+        .select-alert .alert-button-group{
+          padding: 0;
+      //    background: map-get($colors, footerBtn);
+        }
+        .select-alert .alert-button{
+          width: 50%;
+          margin: 0;
+          padding: 0;
+          border-radius: 0px;
+         // background: map-get($colors, footerBtn);
+        }
+  
+        .select-alert .alert-button:nth-last-of-type(1){
+             // border-left: 2px solid map-get($colors, white)!important;
+        }
+  
+        .select-alert .alert-button .button-inner{
+          justify-content: center;
+          padding: 8%;
+          text-transform: none;
+          font-size: 1.2em;
+         // //color:map-get($colors, white);
+        }
+        .select-alert [aria-checked=true] .alert-radio-label {
+        //  //color:map-get($colors, black);
+      }
+  
+  
+  /************************ionic-selectable checkmark btn ******************************************/
+        .ion-md-checkmark-circle:before {
+          content: "\f361"!important;
+        }
+        .icon-md-primary{
+            //color:map-get($colors, footerBtn)!important;
+        }
+        .ion-md-radio-button-off:before{
+            //color:map-get($colors, footerBtn)!important;
+        }
+  
+        /************************Radio checked ******************************************/
+        .item-radio-checked.item-md ion-label {
+        //  //color:map-get($colors, black);
+      }
+  
+      /************************Popover ******************************************/
+  
+      .filter-popover .popover-content{
+          width: 80%;
+        //  min-height: 78%;
+          height: 78%;
+         // top: 90px !important;
+         top: 14% !important;
+          left: 19%!important;
+      }
+      ion-backdrop{
+         // //background-color: #4d4d4d;
+          //background-color: #000;
+          opacity: 0.6;
+      }
+      /************************end******************************************/
+  .popover-md .popover-viewport {
+    height: 95%;
+  }
+  .popover-content ion-content, .popover-content .scroll-content{
+      height: 99%;
+      overflow: hidden;
+  }
+  ion-modal {
+      ion-backdrop {
+          visibility: visible;
+      }
+      .modal-wrapper {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+      
+      }
+  }
+  
+  /********************popover class added*********************************/
+  .quickactivity-popover .popover-content{
+         
+      width: 50%!important;
+      height: initial !important;
+       //top: initial!important;
+       //left: initial!important;
+  }
+  .history-popover .scroll-content{
+      overflow: scroll!important;
+  }
+  
+  .history-popover .popover-content{
+      width: 85%!important;
+      height: initial!important;
+      top: 20% !important;
+      left: 7% !important;
+  }
+  
+  
+  /************************************************************/
+  .Requestpermitmodal  .modal-wrapper{
+      height: 56%!important;
+      top: 44%!important;
+  }
+  
+  @media (max-height: 480px) {
+      .Requestpermitmodal .modal-wrapper{
+          height: 80%!important;
+          top: 60%!important;
+      }
+  }
+  .addvehiclemodal .modal-wrapper{
+      height: 36%!important;
+      top: 64%!important;
+  }
+  
+  ng-component{ &.app-root{ z-index: 10000; } } 

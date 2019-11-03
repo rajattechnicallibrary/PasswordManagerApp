@@ -1,5 +1,7 @@
 {
   "name": "PasswordManagerApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
