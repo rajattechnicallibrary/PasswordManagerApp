@@ -1,27 +1,54 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      List
-    </ion-title>
+
+    <ion-row>
+      <ion-col col-6 class="cstmIcontitle">
+        <ion-title>
+          Secure Password List
+        </ion-title>
+      </ion-col>
+      <ion-col col-6 text-right (click)="addpassword()">
+        <ion-icon class="cstmIconSearch" ios="ios-add" md="md-add"></ion-icon>
+      </ion-col>
+
+    </ion-row>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
-    </ion-item>
+
+  <ion-list *ngIf="lengthofCat">
+    <ion-item *ngFor="let x of catArray; let  i = index">
+      <ion-avatar slot="start">
+        <ion-icon name="md-albums" class="avataricon" color="danger"></ion-icon>
+      </ion-avatar>
+      <ion-label (click)="viewpassword(x.id)">
+        <p class="sizefont" *ngIf="x.pname">Name:     {{x.pname}}</p>   
+        <p  style="font-weight: 600;color:black" *ngIf="x.user_name">Username: {{x.user_name}}</p>  
+        <p  *ngIf="x.cname">Category: {{x.cname}}</p>  
+        <p color="danger" *ngIf="x.hint">Hint: {{x.hint}}</p>
+        <!-- <p color="danger" *ngIf="x.created_date && x.updated_date">Created: {{x.created_date}}</p>  -->
+        <p color="danger" *ngIf="x.updated_date">Updated: {{x.updated_date}}</p> 
+      </ion-label>
+      <ion-icon style="font-size: 2.5em" ios="ios-more" md="md-more" class="moreIcon"
+        (click)="popOver($event, x.id, x.name)"></ion-icon>
+    </ion-item>  
   </ion-list>
-  <!--
-    <div *ngIf="selectedItem" padding>
-      You navigated here from <b>{{selectedItem.title }}</b>
-    </div>
-  -->
+  <ion-list inset *ngIf="!lengthofCat">
+    <ion-row>
+      <ion-col col-6 offset-3 text-center>
+        <a>No Account Name Found</a>
+        
+      </ion-col>
+    </ion-row>
+    <ion-row (click)="addpassword()">
+      <ion-col col-6 offset-3 text-center>
+        <ion-icon style="font-size: xx-large;" ios="ios-add-circle" md="md-add-circle"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+  </ion-list>
+
 </ion-content>

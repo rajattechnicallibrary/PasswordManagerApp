@@ -1,0 +1,16 @@
+<ion-content *ngIf="where == 'list'">
+  <ion-row class="cstmRow" (click)="popOverMenuFor('view');">
+    <ion-col>View</ion-col>
+  </ion-row>
+  <ion-row class="cstmRow" (click)="popOverMenuFor('delete');">
+    <ion-col>Delete</ion-col>
+  </ion-row>
+</ion-content>
+<ion-content *ngIf="where == 'cat'">
+  <ion-row class="cstmRow" (click)="popOverMenu('view');">
+    <ion-col>View</ion-col>
+  </ion-row>
+  <ion-row class="cstmRow" (click)="popOverMenu('delete');">
+    <ion-col>Delete</ion-col>
+  </ion-row>
+</ion-content>

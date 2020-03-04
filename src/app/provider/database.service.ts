@@ -5,25 +5,26 @@ import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from './logger.service';
+import * as moment from 'moment';
+
 declare var window;
-
-
-export interface Dev {
-  id: number,
-  name: string,
-  color: string
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-  db: any;
   private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   developers = new BehaviorSubject([]);
   products = new BehaviorSubject([]);
+  items: any[] = [];
   hasCordova: any = false;
   fileName: any = 'database';
+  versionDb: any;
+  public dbName = 'plocker.sqlite';
+  public versionDBName = 'plocker.sqlite';
+  private db: SQLiteObject;
+
+
   constructor(
     private sqlite: SQLite,
     private sqlitePorter: SQLitePorter,
@@ -34,34 +35,42 @@ export class DatabaseService {
     if (this.platform.is('cordova')) {
       this.hasCordova = true;
     }
-    this.initDB();
+    //this.initDB();
 
   }
 
-  initDB() {
-    if (this.hasCordova) {
-      try {
-        this.sqlite.create({
-          name: 'passwordDB.db',
-          location: 'default'
-        }).then((db: SQLiteObject) => {
-          this.db = db;
-          console.log(this.db);
-          this.seeddb();
-        });
-      } catch (error) {
-        this.log.log(this.fileName, "initDB", JSON.stringify(error));
+
+  /**
+  * 08/2/2018 Gurkirat Singh
+  * Gets the database file name
+  * @memberOf DatabaseProvider
+  */
+  getDbName() {
+    return this.dbName;
+  }
+
+  getVersionDbName() {
+    return this.versionDBName;
+  }
+
+  getDB() {
+    if (!this.db) {
+      this.log.log(this.fileName, 'getDB', "Opening DB...");
+      if (this.platform.is('cordova')) {
+        this.db = window.sqlitePlugin.openDatabase({ name: this.dbName, location: 'default' });
+      } else {
+        this.db = window.openDatabase(this.dbName, '1', 'Emerson', 1024 * 1024 * 100);
       }
     }
-
+    return this.db;
   }
+
   seeddb() {
     try {
       this.http.get('assets/initDB.sql', { responseType: 'text' })
         .subscribe(sql => {
           this.sqlitePorter.importSqlToDb(this.db, sql)
             .then(_ => {
-              this.loadDevelopers();
               this.dbReady.next(true);
             })
             .catch(e => console.error(e));
@@ -69,90 +78,307 @@ export class DatabaseService {
         });
 
     } catch (error) {
-      this.log.log(this.fileName, "initDB", error);
+      this.log.log(this.fileName, "initDB", JSON.stringify(error));
     }
   }
 
-  getdbState() {
-    return this.dbReady.asObservable();
-  }
-
-  getDevs(): Observable<Dev[]> {
-    return this.developers.asObservable();
-  }
-
-  getProducts(): Observable<any[]> {
-    return this.products.asObservable();
-  }
-
-
-  loadDevelopers() {
-    //  this.log.log(this.fileName, "initDB", JSON.stringify("error"));
-    let newData = this.db.executeSql('SELECT * FROM category', []).then(data => {
-      let developers: Dev[] = [];
-      if (data.rows.length > 0) {
-        for (var i = 0; i < data.rows.length; i++) {
-          console.log(JSON.stringify(data.rows.item(i)));
-          developers.push({
-            id: data.rows.item(i).id,
-            name: data.rows.item(i).name,
-            color: data.rows.item(i).color
-          });
-        }
-      }
-      this.developers.next(developers);
-      console.log(this.developers);
-    });
-    this.sqlitePorter.exportDbToJson(this.db)
-      .then((json) => {
-        console.log("70 JSON: " + json);
-      })
-      .catch(e => console.error(e));
-    this.sqlitePorter.exportDbToSql(this.db)
-      .then((json) => {
-        console.log("75 JSON: " + json);
-      })
-      .catch(e => console.error(e));
-    return newData;
-  }
-
-  public insertData(query, queryParams, functionName) {
+  deleteAllDataFromTable() {
+    console.log("rs");
+    let versionData = [];
     return new Promise((resolve, reject) => {
-      this.db.transaction((transaction) => {
-        transaction.executeSql(query, queryParams, (tx, res) => {
-          resolve(res.insertId);
-        }, (tx, error) => {
-          this.log.log(this.fileName, functionName, 'Error: ' + JSON.stringify(error.message));
-          reject(error);
-        });
-      }, (error) => {
-        this.log.log(this.fileName, functionName, 'Error TXN: ' + JSON.stringify(error.message));
-        reject(error);
-      });
-    });
-  }
-
-  public getList(query, queryParams, functionName): Promise<JSON[]> {
-    return new Promise((resolve, reject) => {
-      this.db.transaction((tx) => {
-        tx.executeSql(query, queryParams, ((tx, rs) => {
-          let resultArray = [];
-          if (rs.rows.length > 0) {
-            for (let i = 0; i < rs.rows.length; i++) {
-              let item = rs.rows.item(i);
-              resultArray.push(item);
-            }
-          }
-          resolve(resultArray);
+      let query = '';
+      query = "DELETE from user";
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          console.log(rs);
+          resolve(rs);
         }), ((tx, error) => {
+          this.log.log(this.fileName, 'deleteAllDataFromTable', 'Error : ' + JSON.stringify(error));
           reject(error);
         }));
-      }, (error) => {
-        this.log.log(this.fileName, functionName, 'Error TXN: ' + JSON.stringify(error.message));
-        reject(error);
       });
     });
   }
 
+  getItem(id?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      if (id) query = "Select * from user where id = " + id + "ORDER BY id DESC LIMIT 1";
+      query = "Select * from user ORDER BY id DESC LIMIT 1";
+
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          if (rs.rows.length != 0) {
+            versionData = rs.rows.item(0)
+          }
+
+          console.log("108", versionData);
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getItem', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  registerUser(user?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "INSERT INTO user(master_password, email, created_date) VALUES (?,?,?)";
+      insertValues.push(user.password);
+      insertValues.push(user.email);
+      insertValues.push(this.setDate());
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          console.log("139", rs.rowsAffected);
+          resolve(rs.rowsAffected);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'registerUser', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+
+  checkUser(password) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select * from user where master_password = " + password;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          if (rs.rows.length != 0) {
+            versionData = rs.rows.item(0)
+          }
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getItem', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+
+  getCategories(data?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select * from categories";
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          let rowLength = rs.rows.length;
+          for (let i = 0; i < rowLength; i++) {
+            versionData.push(rs.rows.item(i));
+          }
+          console.log(versionData)
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getCategories', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+  getCategoriesById(data?) {
+    let versionData;
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select * from categories where id = " + data;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          let rowLength = rs.rows.length;
+         // console.log(rowLength)
+          if(rowLength > 0) versionData = rs.rows.item(0)
+          resolve(versionData);  
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getCategoriesById', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+  getpasswordById(data?) {   
+    let versionData;
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id where pid = " + data;;
+     // query = "Select * from password where id = " + data;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          let rowLength = rs.rows.length;
+         // console.log(rowLength)
+          if(rowLength > 0) versionData = rs.rows.item(0)
+          resolve(versionData);  
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getpasswordById', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  getPasswordList(data?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id";
+      // query = "Select *  from password";
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          let rowLength = rs.rows.length;
+          for (let i = 0; i < rowLength; i++) {
+            versionData.push(rs.rows.item(i));
+          }
+          console.log(versionData)
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getPasswordList', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  setDate() {
+    //  console.log(date);
+    return moment(new Date()).format("DD-MM-YYYY hh:mm A");
+  }
+
+  updateUserLog(user?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "UPDATE user SET login_time = ? , updated_date = ? where id = ?";
+      insertValues.push(this.setDate());
+      insertValues.push(this.setDate());
+      insertValues.push(user.id);
+      // insertValues.push(user.email);
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'updateUserLog', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+  updatePassword(user?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "UPDATE user SET login_time = ? , updated_date = ? , master_password = ? where id = ?";
+      insertValues.push(this.setDate());
+      insertValues.push(this.setDate());
+      insertValues.push(user.password);
+      insertValues.push(user.id);
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'updatePassword', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  deleteCategoryFromTable(id?) {
+    console.log("deleteCategoryFromTable");
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "DELETE from categories where id = " + id;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          console.log(rs);
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'deleteCategoryFromTable', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+  deleteListFromTable(id?) {
+    console.log("deleteCategoryFromTable");
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "DELETE from password where id = " + id;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          console.log(rs);
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'deleteListFromTable', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  addcategory(data?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "INSERT INTO categories(name, desc, created_date, updated_date, added_by) VALUES (?,?,?,?,?)";
+      insertValues.push(data.catName);
+      insertValues.push(data.catdesc);
+      insertValues.push(this.setDate());
+      insertValues.push(this.setDate());
+      insertValues.push(data.user_id);
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          console.log("139", rs.rowsAffected);
+          resolve(rs.rowsAffected);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'registerUser', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  addpassword(data?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "INSERT INTO password(password, created_date, updated_date, added_by, hint, cat_id, url, expired, status, name, desc, user_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+      insertValues.push(data.account_password);
+      insertValues.push(this.setDate());
+      insertValues.push(this.setDate());
+      insertValues.push(data.user_id);
+      insertValues.push(data.account_hint);
+      insertValues.push(data.account_cat);
+      insertValues.push(data.account_url);
+      insertValues.push(data.account_expiry);
+      insertValues.push('active');
+      insertValues.push(data.account_name);
+      insertValues.push(data.account_desc);
+      insertValues.push(data.account_username);
+      console.log(insertValues) 
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          console.log("139", rs.rowsAffected);
+          resolve(rs.rowsAffected);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'addpassword', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
 
 }

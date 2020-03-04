@@ -1,0 +1,3 @@
+Key Store password:- plocker@18
+Key alias:- plocker
+key passwoerd:- plocker@@2018

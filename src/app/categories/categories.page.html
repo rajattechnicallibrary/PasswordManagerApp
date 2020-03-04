@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-row>
+      <ion-col col-6 class="cstmIcontitle">
+        <ion-title>
+          Categorie List
+        </ion-title>
+      </ion-col>
+      <ion-col col-6 text-right (click)="addCat()">
+        <ion-icon class="cstmIconSearch" ios="ios-add" md="md-add"></ion-icon>
+      </ion-col>
+
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-list *ngIf="lengthofCat">
+    <ion-item *ngFor="let x of catArray; let  i = index">
+      <ion-avatar slot="start">
+        <ion-icon name="md-albums" class="avataricon" color="danger"></ion-icon>
+      </ion-avatar>
+      <ion-label (click)="viewTap(x.id)">
+        <h2>{{x.name}}</h2> 
+        <h3 *ngIf="desc">Desc: {{x.desc}}</h3>
+        <p color="danger" >ID: CATID{{x.id}}{{j}}</p>   
+        <p color="danger">Created: {{x.created_date}}</p> 
+      </ion-label>
+      <ion-icon style="font-size: 2.5em" ios="ios-more" md="md-more" class="moreIcon"
+        (click)="popOver($event, x.id, x.name)"></ion-icon>
+    </ion-item> 
+  </ion-list>
+  <ion-list inset *ngIf="!lengthofCat">
+    <ion-row>
+      <ion-col col-6 offset-3 text-center>
+        <a>No Categroies Found</a>
+        
+      </ion-col>
+    </ion-row>
+    <ion-row (click)="addCat()">
+      <ion-col col-6 offset-3 text-center>
+        <ion-icon style="font-size: xx-large;" ios="ios-add-circle" md="md-add-circle"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+  </ion-list>
+
+</ion-content>

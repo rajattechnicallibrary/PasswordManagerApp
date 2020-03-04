@@ -14,10 +14,11 @@
 
 
   <ion-row>
-    <ion-col size="6" *ngFor="let x of newarray; let i = index">
-      <ion-card class="bg" [style.background]="x.color" (click)="viewDetail()">
+    <ion-col size="6" *ngFor="let x of randomData; let i = index">
+      <ion-card class="bg"  (click)="viewDetail()">
         <ion-card-header>
-          {{x.name}} ({{i}})
+          {{x.name}} 
+          <!-- ({{i}}) -->         
         </ion-card-header>
       </ion-card>
     </ion-col>

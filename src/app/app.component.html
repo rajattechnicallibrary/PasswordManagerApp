@@ -1,5 +1,4 @@
 <ion-app>
-  <ion-split-pane>
     <ion-menu type="overlay">
       <ion-header >
         <ion-toolbar color="primary">
@@ -9,13 +8,21 @@
       <ion-content>
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item *ngIf="p.url != '/share-app'" [routerDirection]="'root'" [routerLink]="[p.url]">
+              <img class="icon-set item-inner" src="{{p.image}}">{{p.title}}
+            </ion-item>
+            <ion-item *ngIf="p.url == '/share-app'" [routerDirection]="'root'" (click)="sharingApp()">
               <img class="icon-set item-inner" src="{{p.image}}">{{p.title}}
             </ion-item>
           </ion-menu-toggle>
+          <ion-row text-center class="footerTxt" style="margin-top: 10%;">
+            <ion-col class="cstmTxt1" (click) ="logOut()">
+              <ion-button expand="block">Logout <ion-icon name="log-out"></ion-icon></ion-button>
+            </ion-col>
+          </ion-row>
         </ion-list>
-      </ion-content>
+      </ion-content> 
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
-  </ion-split-pane>
+
 </ion-app>

@@ -11,10 +11,20 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { File } from "@ionic-native/file/ngx";
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
+import { Toast } from '@ionic-native/toast/ngx';
+import { IonicStorageModule } from '@ionic/storage';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
+// import { CategorieActivityComponent } from './popover/categorie-activity/categorie-activity.component';
+import { CategorieActivityPageModule } from './page/categorie-activity/categorie-activity.module';
+import { ViewPageModule } from './page/view/view.module';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,8 +32,13 @@ import { File } from "@ionic-native/file/ngx";
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
-    HttpClientModule
+    AppRoutingModule, 
+    HttpClientModule,
+    IonicStorageModule.forRoot(),
+    CategorieActivityPageModule,
+    ViewPageModule
+    // TooltipsModule.forRoot(),
+    // BrowserAnimationsModule
   ],
   providers: [
     StatusBar,
@@ -31,6 +46,13 @@ import { File } from "@ionic-native/file/ngx";
     SQLite,
     SQLitePorter,
     File,
+    LocalNotifications,
+    SqliteDbCopy, 
+    AndroidPermissions,
+    FingerprintAIO,
+    Toast,
+    EmailComposer,
+    Clipboard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

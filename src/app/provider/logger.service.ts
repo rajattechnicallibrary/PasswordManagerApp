@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { File } from "@ionic-native/file/ngx";
 import * as moment from "moment";
-import { Platform } from '@ionic/angular';
+import { Platform, LoadingController } from '@ionic/angular';
 
 declare var cordova: any;
 
@@ -15,7 +15,8 @@ export class LoggerService {
   suffix = ".log";
   constructor(
     private file: File,
-    private platform: Platform
+    private platform: Platform,
+    public loadingController: LoadingController
 
   ) {
     if (this.platform.is('cordova')) {
@@ -24,6 +25,7 @@ export class LoggerService {
   }
 
   log(className, methodName, message) {
+    console.log(className,methodName,message)
     let msg = moment().format("MM-DD-YYYY hh:mm:ss.SSSZ a") + ': ' + className.toUpperCase() + ' : ' + methodName + ' - ' + message + "\n";
     var currentDate = this.prefix + moment(new Date()).format("MM-DD-YYYY") + this.suffix;
     if (this.hasCordova) {
@@ -42,4 +44,51 @@ export class LoggerService {
       console.log(msg);
     }
   }
+
+  async loader(msg?) {
+    const loading = await this.loadingController.create({
+      spinner: "lines",
+      duration:1500,
+      message: msg?"Hi":"Please Wait...",
+      translucent: true,
+    });
+    return await loading.present();
+  }
+
+  checkFileIfExist(filepath, filename) {
+    return new Promise((resolve, reject) => {
+      this.file.checkFile(filepath, filename).then(res => {
+        resolve(res);
+      }).catch((err: any) => {
+        if (err.message != 'NOT_FOUND_ERR') this.log(this.fileName, "checkFileIfExist", "Error in checkFile : " + JSON.stringify(err));
+        resolve(false);
+      })
+    });
+  }
+
+  checkDirIfExist(filepath, filename) {
+    return new Promise((resolve, reject) => {
+      this.file.checkDir(filepath, filename).then(res => {
+        resolve(res);
+      }).catch((err: any) => {
+        if (err.message != 'NOT_FOUND_ERR') this.log(this.fileName, "checkDirIfExist", "Check DIR : " + JSON.stringify(err));
+        resolve(false);
+      })
+    });
+  }
+
+  
+  /**
+  * 08/07/2018 Zohaib Khan: Checking if directory exists or not
+  */
+ checkIfDirectoryExist(path, dirName) {
+  return new Promise((resolve, reject) => {
+    this.file.checkDir(path, dirName).then(res => {
+      resolve(res)
+    }).catch((err: any) => {
+      if (err.message != 'NOT_FOUND_ERR') this.log(this.fileName, "checkIfDirectoryExist", "Error in checkDir : " + JSON.stringify(err));
+      resolve(false);
+    });
+  })
+}
 }

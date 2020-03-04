@@ -90,3 +90,15 @@
   border: none
 }
 
+ion-popover{
+  ion-backdrop{
+  opacity: 0.3 !important;
+  }
+  .popover-wrapper{
+  .popover-content{
+  width:40%;
+//  max-width:30%;
+  }
+  }  
+  }
+

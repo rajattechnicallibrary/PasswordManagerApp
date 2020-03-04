@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BridgeService } from '../provider/bridge.service';
 
 @Component({
   selector: 'app-about-us',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutUsPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    public bridge: BridgeService,
+
+  ) { }
 
   ngOnInit() {
   }
