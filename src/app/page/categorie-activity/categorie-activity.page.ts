@@ -29,7 +29,7 @@ export class CategorieActivityPage implements OnInit {
     this.cat_id = this.navParams.get('cat_id');
     this.name = this.navParams.get('name');
     this.where = this.navParams.get('where');
-    console.log(this.where)
+    console.log(this.cat_id)
   }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class CategorieActivityPage implements OnInit {
     if (type == 'view') {
       this.popoverController.dismiss()
       this.navCtrl.navigateForward('/view-categories')
-     } else if (type == 'delete') {
+    } else if (type == 'delete') {
       this.presentAlert(this.name, this.cat_id);
     } else {
 
@@ -75,21 +75,22 @@ export class CategorieActivityPage implements OnInit {
       ],
     })
     await confirm.present();
-  } 
+  }
 
 
   popOverMenuFor(type?) {
-
+    this.popoverController.dismiss()
     if (type == 'view') {
       this.popoverController.dismiss()
       this.navCtrl.navigateForward('/view-password')
-     
+
     } else if (type == 'delete') {
       this.CatpresentAlert(this.name, this.cat_id);
-    } else {
-
+    } else if (type == 'Edit') {
+      localStorage.setItem("pwd_id", this.cat_id)
+      this.popoverController.dismiss()
+      this.navCtrl.navigateForward('/add-detail')
     }
-    // this.navCtrl.navigateForward('/add-categories')
   }
 
   async CatpresentAlert(name?, id?) {

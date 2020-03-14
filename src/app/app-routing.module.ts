@@ -29,7 +29,8 @@ const routes: Routes = [
   { path: 'categorie-activity', loadChildren: './page/categorie-activity/categorie-activity.module#CategorieActivityPageModule' },
   { path: 'view', loadChildren: './page/view/view.module#ViewPageModule' },
   { path: 'view-categories', loadChildren: './view-categories/view-categories.module#ViewCategoriesPageModule' },
-  { path: 'view-password', loadChildren: './view-password/view-password.module#ViewPasswordPageModule' }
+  { path: 'view-password', loadChildren: './view-password/view-password.module#ViewPasswordPageModule' },
+  { path: 'auth-password', loadChildren: './auth-password/auth-password.module#AuthPasswordPageModule' }
 ];
 
 @NgModule({

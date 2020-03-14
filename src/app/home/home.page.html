@@ -15,9 +15,9 @@
 
   <ion-row>
     <ion-col size="6" *ngFor="let x of randomData; let i = index">
-      <ion-card class="bg"  (click)="viewDetail()">
-        <ion-card-header>
-          {{x.name}} 
+      <ion-card class="bg"  (click)="viewDetail(x.id, x.totalpassword)">
+        <ion-card-header style="font-size: smaller;">
+          {{x.name}} ({{x.totalpassword}})
           <!-- ({{i}}) -->         
         </ion-card-header>
       </ion-card>

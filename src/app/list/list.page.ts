@@ -3,6 +3,7 @@ import { NavController, PopoverController, Events } from '@ionic/angular';
 import { DatabaseService } from '../provider/database.service';
 import { BridgeService } from '../provider/bridge.service';
 import { CategorieActivityPage } from '../page/categorie-activity/categorie-activity.page';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-list',
@@ -11,8 +12,10 @@ import { CategorieActivityPage } from '../page/categorie-activity/categorie-acti
 })
 export class ListPage implements OnInit {
 
+  Moment: any = moment;
   catArray: any
   lengthofCat: boolean = false
+  tapToOpen
   constructor(
     public navCtrl: NavController,
     public database: DatabaseService,
@@ -27,13 +30,18 @@ export class ListPage implements OnInit {
   }
 
   ngOnInit() {
+    this.events.publish('callagain')
+    this.events.subscribe('callagain', () => {
+      this.loadPage();
+    });
   }
 
   loadPage() {  
     this.lengthofCat = false;
     this.catArray = '';
     console.log("list 35", "res")
-    this.database.getPasswordList().then((res: any) => {
+    if(localStorage.getItem("tapToOpen")){this.tapToOpen = localStorage.getItem("tapToOpen"); localStorage.removeItem("tapToOpen") }
+    this.database.getPasswordList(this.tapToOpen).then((res: any) => {
       console.log("22", res)
       if (res.length > 0) this.lengthofCat = true; this.catArray = res
     }).catch((err) => {
@@ -55,7 +63,7 @@ export class ListPage implements OnInit {
       event: ev,
       translucent: true,
       showBackdrop: true,
-      componentProps: { cat_id: id, name: name, where: 'list' }
+      componentProps: { cat_id: id, name: name, where: 'list'}
     });
 
 
@@ -73,7 +81,7 @@ export class ListPage implements OnInit {
     this.events.subscribe('Event_list', () => {
       this.loadPage();
     });
-    this.navCtrl.navigateForward('/view-password')
+    this.navCtrl.navigateForward('/auth-password')
   }
  
 }

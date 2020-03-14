@@ -168,8 +168,8 @@ export class DatabaseService {
   getCategories(data?) {
     let versionData = [];
     return new Promise((resolve, reject) => {
-      let query = '';
-      query = "Select * from categories";
+      let query = '';      
+      query = "Select COUNT(pwd.id) as totalpassword, ca.* from categories as ca LEFT JOIN password as pwd ON pwd.cat_id = ca.id group by ca.id";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
           let rowLength = rs.rows.length;
@@ -227,7 +227,14 @@ export class DatabaseService {
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
-      query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id";
+      if(data) {
+        query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id where c.id = " + data;
+
+      }else{
+
+        query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id";
+      }
+      console.log(query)
       // query = "Select *  from password";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
@@ -380,5 +387,36 @@ export class DatabaseService {
       });
     });
   }
+  UpdatePassword(data?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "UPDATE password SET password = ? , updated_date = ? , added_by = ?, hint = ?, cat_id = ?, url = ?, expired = ?, status = ?, name = ?, desc = ?, user_name = ? where id = ?";
+      insertValues.push(data.account_password);
+      insertValues.push(this.setDate());
+      insertValues.push(data.user_id);
+      insertValues.push(data.account_hint);
+      insertValues.push(data.account_cat);
+      insertValues.push(data.account_url);
+      insertValues.push(data.account_expiry);
+      insertValues.push('active');
+      insertValues.push(data.account_name);
+      insertValues.push(data.account_desc);
+      insertValues.push(data.account_username);
+      insertValues.push(data.pwd_id);
+      console.log(insertValues) 
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          console.log("139", rs.rowsAffected);
+          resolve(rs.rowsAffected);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'addpassword', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+  
 
 }

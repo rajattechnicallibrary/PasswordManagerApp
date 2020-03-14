@@ -4,11 +4,11 @@
         <ion-toolbar color="primary">
           <ion-title text-center>Password Locker</ion-title>
         </ion-toolbar>
-      </ion-header>    
+      </ion-header>      
       <ion-content>
-        <ion-list>
+        <ion-list>   
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item *ngIf="p.url != '/share-app'" [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item *ngIf="p.url != '/share-app'" [routerDirection]="'root'" [routerLink]="[p.url]" (click)="Callagain(p.url)">
               <img class="icon-set item-inner" src="{{p.image}}">{{p.title}}
             </ion-item>
             <ion-item *ngIf="p.url == '/share-app'" [routerDirection]="'root'" (click)="sharingApp()">

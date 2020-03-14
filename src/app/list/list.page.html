@@ -28,9 +28,9 @@
         <p class="sizefont" *ngIf="x.pname">Name:     {{x.pname}}</p>   
         <p  style="font-weight: 600;color:black" *ngIf="x.user_name">Username: {{x.user_name}}</p>  
         <p  *ngIf="x.cname">Category: {{x.cname}}</p>  
-        <p color="danger" *ngIf="x.hint">Hint: {{x.hint}}</p>
+        <p color="danger" *ngIf="x.hint">Hint: {{x.hint}}</p> 
         <!-- <p color="danger" *ngIf="x.created_date && x.updated_date">Created: {{x.created_date}}</p>  -->
-        <p color="danger" *ngIf="x.updated_date">Updated: {{x.updated_date}}</p> 
+        <p color="danger" *ngIf="x.updated_date" text-right style="font-style: italic;">Last Updated: {{ Moment(x.updated_date).format('hh:mm A')}}</p> 
       </ion-label>
       <ion-icon style="font-size: 2.5em" ios="ios-more" md="md-more" class="moreIcon"
         (click)="popOver($event, x.id, x.name)"></ion-icon>
@@ -50,5 +50,9 @@
     </ion-row>
 
   </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end"  slot="fixed" (click)="addpassword()">
+    <ion-fab-button> <ion-icon ios="ios-add" md="md-add"></ion-icon></ion-fab-button>
+  </ion-fab>
 
 </ion-content>

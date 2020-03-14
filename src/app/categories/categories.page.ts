@@ -4,6 +4,8 @@ import { DatabaseService } from '../provider/database.service';
 import { CategorieActivityPage } from '../page/categorie-activity/categorie-activity.page';
 import { BridgeService } from '../provider/bridge.service';
 import { ViewPage } from '../page/view/view.page';
+import * as moment from "moment";
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.page.html',
@@ -11,8 +13,11 @@ import { ViewPage } from '../page/view/view.page';
 })
 export class CategoriesPage implements OnInit {
 
+  fileName= 'Categories';
   catArray: any
   lengthofCat: boolean = false
+  Moment: any = moment;
+
   constructor(
     public navCtrl: NavController,
     public database: DatabaseService,
@@ -42,6 +47,41 @@ export class CategoriesPage implements OnInit {
     })
   }
 
+  ionViewCanEnter() {
+    console.log(this.fileName, 'ionViewCanEnter')
+  }
+
+  ionViewCanLeave() {
+    console.log(this.fileName, 'ionViewCanLeave')
+
+  }
+
+  ionViewDidEnter() {
+    console.log(this.fileName, 'ionViewDidEnter')
+
+  }
+
+  ionViewDidLeave() {
+    console.log(this.fileName, 'ionViewDidLeave')
+
+  }
+
+  ionViewDidLoad() {
+    console.log(this.fileName, 'ionViewDidLoad')
+
+  }
+
+  ionViewWillEnter() {
+  this.loadPage()
+
+    console.log(this.fileName, 'ionViewWillEnter')
+
+  }
+
+  ionViewWillUnload() {
+    console.log(this.fileName, 'ionViewWillUnload')
+
+  }
   async popOver(ev: any, id, name?) {
     const popover = await this.popoverController.create({
       component: CategorieActivityPage,

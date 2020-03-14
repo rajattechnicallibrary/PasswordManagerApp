@@ -21,10 +21,11 @@ import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
-// import { CategorieActivityComponent } from './popover/categorie-activity/categorie-activity.component';
 import { CategorieActivityPageModule } from './page/categorie-activity/categorie-activity.module';
 import { ViewPageModule } from './page/view/view.module';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,6 +54,7 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
     Toast,
     EmailComposer,
     Clipboard,
+    InAppPurchase2,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

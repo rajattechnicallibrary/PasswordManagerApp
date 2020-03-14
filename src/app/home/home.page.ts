@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { DatabaseService } from '../provider/database.service';
 import { LoggerService } from '../provider/logger.service';
+import { BridgeService } from '../provider/bridge.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -18,22 +20,68 @@ export class HomePage {
   ];
   constructor(
     public database: DatabaseService,
-    private log: LoggerService
+    private log: LoggerService,
+    public bridge: BridgeService,
+    public navCtrl: NavController,
+
+
   ) {
 
+  this.loadPage()
+  }
+
+
+  loadPage(){
     this.database.getCategories().then((res) => {
       console.log(res)
       this.randomData = res
-    }).catch( (err)=>{
+    }).catch((err) => {
       console.log(err)
     })
   }
+  ionViewCanEnter() {
+    console.log(this.fileName, 'ionViewCanEnter')
+  }
 
-  viewDetail() {
-    // this.common.loadDevelopers();
-    let randomData = this.stringGen(30) + this.getRandomColor();
-    console.log(randomData)
-    this.log.log(this.fileName, "initDB", randomData);
+  ionViewCanLeave() {
+    console.log(this.fileName, 'ionViewCanLeave')
+
+  }
+
+  ionViewDidEnter() {
+    console.log(this.fileName, 'ionViewDidEnter')
+
+  }
+
+  ionViewDidLeave() {
+    console.log(this.fileName, 'ionViewDidLeave')
+
+  }
+
+  ionViewDidLoad() {
+    console.log(this.fileName, 'ionViewDidLoad')
+
+  }
+
+  ionViewWillEnter() {
+  this.loadPage()
+
+    console.log(this.fileName, 'ionViewWillEnter')
+
+  }
+
+  ionViewWillUnload() {
+    console.log(this.fileName, 'ionViewWillUnload')
+
+  }
+
+  viewDetail(id?, rows?) {
+    if(rows == 0) {
+      this.bridge.showErrorMsgByToast("No Account Found !!!",'bottom'); return false;
+    }
+    localStorage.setItem("tapToOpen",id);
+    this.navCtrl.navigateForward('/list')
+
   }
 
   stringGen(len) {

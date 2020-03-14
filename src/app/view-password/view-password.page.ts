@@ -32,7 +32,7 @@ export class ViewPasswordPage implements OnInit {
  
   loadPage(){
     let pass_id = localStorage.getItem('pass_id');
-    localStorage.removeItem('pass_id');
+    //localStorage.removeItem('pass_id');
     console.log(pass_id)
     this.database.getpasswordById(pass_id).then((res: any) => {
       console.log(res)

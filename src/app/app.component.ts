@@ -1,9 +1,9 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 
-import { Platform, ModalController, MenuController, ActionSheetController, PopoverController, IonRouterOutlet, ToastController, NavController, AlertController } from '@ionic/angular';
+import { Platform, ModalController, MenuController, ActionSheetController, PopoverController, IonRouterOutlet, ToastController, NavController, AlertController, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoggerService } from './provider/logger.service';
 import { File } from '@ionic-native/file/ngx';
 import { DatabaseService } from './provider/database.service';
@@ -35,8 +35,8 @@ export class AppComponent {
   public appPages = [
     { title: 'Dashboard', url: '/home', image: "assets/icon/home.png" },
     { title: 'Categories', url: '/categories', image: "assets/icon/add.png" },
-    { title: 'Add Categories', url: '/add-categories', image: "assets/icon/add.png" },
-    { title: 'Add Detail', url: '/add-detail', image: "assets/icon/add.png" },
+    // { title: 'Add Categories', url: '/add-categories', image: "assets/icon/add.png" },
+    // { title: 'Add Detail', url: '/add-detail', image: "assets/icon/add.png" },
     { title: 'Secure List', url: '/list', image: "assets/icon/list.png" },
     { title: 'Change Password', url: '/change-password', image: "assets/icon/change_password.png" },
     { title: 'Share', url: '/share-app', image: "assets/icon/share.png" },
@@ -48,7 +48,7 @@ export class AppComponent {
     
   ];
   fileName: any = 'appPage';
- 
+ currentUrl
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -69,12 +69,19 @@ export class AppComponent {
     public bridge: BridgeService,
     private faio: FingerprintAIO,
     public alertController: AlertController,
-
+    public events: Events,
+    public route: ActivatedRoute
 
 
 
   ) {
-    this.initializeApp();
+     var url = window.location.href;
+     let stack = url.split("/");
+     let len = stack.length
+    this.currentUrl = this.route.snapshot.url
+   // console.log(this.navCtrl)
+   console.log(this.currentUrl);
+     this.initializeApp();
     // this.bridge.activeLoader()
     this.platform.ready().then((res) => {
 
@@ -272,5 +279,12 @@ export class AppComponent {
     //   console.log("Sharing app")
     window.plugins.socialsharing.share('Password Locker App that lets you lock Important Information ! No Need of Internet Connection', 'Password Locker App', 'https://lh3.googleusercontent.com/XvR0kocuyzkvwTwZO-fE2oPlcbXTt5leyAvgG3NiLYQF47I2TQIz5CJEbwPJmUgtqGQ=s180-rw', 'https://play.google.com/store/apps/details?id=com.hybrid.plocker')
 
+  }
+
+  Callagain(url){
+    console.log(url)
+    if(url == '/list'){
+      this.events.publish('callagain')
+    } 
   }
 }
