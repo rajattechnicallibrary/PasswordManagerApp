@@ -67,6 +67,7 @@ export class AuthPasswordPage implements OnInit {
   ) {
     this.login.password = '';
     this.login.email = '';
+    this.fingerPrintScanner();
   }
 
 
@@ -95,6 +96,9 @@ export class AuthPasswordPage implements OnInit {
     this.login.email = '';
     this.platform.ready().then(() => {
 
+      setTimeout(()=>{
+       // this.fingerPrintScanner();
+      },2000)
 
     })
   }
@@ -164,6 +168,7 @@ export class AuthPasswordPage implements OnInit {
           localStorage.setItem('userData', JSON.stringify(res))
           this.bridge.setUserData(res);
           this.database.updateUserLog(res)
+        
           this.navCtrl.navigateForward('/view-password');
         } else {
           this.presentAlert("Master Password is incorrect");

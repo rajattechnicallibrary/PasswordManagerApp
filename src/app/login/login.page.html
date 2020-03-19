@@ -54,7 +54,7 @@
 
   <span *ngIf="bridge.getUserRegistered()">
     <ion-row text-center class="footerTxt1">
-      <ion-col text-right class="cstmTxt1 border-style" (click)="loginIssue()">Login Issue</ion-col>
+      <ion-col text-right class="cstmTxt1 border-style" (click)="lastloginInfo()">Login Issue</ion-col>
       <ion-col text-left class="cstmTxt1" *ngIf="bridge.getisScannerActive()" (click)="pinCode()">Use Password</ion-col>
       <ion-col text-left class="cstmTxt1" *ngIf="!bridge.getisScannerActive()" (click)="biometric()">Use Biometric
       </ion-col>
@@ -63,10 +63,10 @@
       <!-- <ion-col text-right class="cstmTxt1"></ion-col> -->
       <ion-col class="cstmTxt2" *ngIf="bridge.getLastLogin()"
         (click)="presentAlert('Last Login: '+bridge.getLastLogin())">
-        {{bridge.getLastLogin()}} <ion-icon name="information-circle"></ion-icon>
+        {{getLastLogin}} <ion-icon name="information-circle"></ion-icon>
       </ion-col>
     </ion-row>
-  </span>
+  </span> 
   <span *ngIf="!bridge.getUserRegistered()">
     <ion-row text-center class="footerTxt">
       <ion-col text-right class="cstmTxt1 border-style" (click)="loginIssue()">Terms & Condition</ion-col>

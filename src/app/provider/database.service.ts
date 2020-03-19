@@ -83,14 +83,14 @@ export class DatabaseService {
   }
 
   deleteAllDataFromTable() {
-    console.log("rs");
+    //console.log("rs");
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
       query = "DELETE from user";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
-          console.log(rs);
+          //console.log(rs);
           resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'deleteAllDataFromTable', 'Error : ' + JSON.stringify(error));
@@ -113,7 +113,7 @@ export class DatabaseService {
             versionData = rs.rows.item(0)
           }
 
-          console.log("108", versionData);
+          //console.log("108", versionData);
           resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getItem', 'Error : ' + JSON.stringify(error));
@@ -134,7 +134,7 @@ export class DatabaseService {
       insertValues.push(this.setDate());
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          console.log("139", rs.rowsAffected);
+          //console.log("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'registerUser', 'Error : ' + JSON.stringify(error));
@@ -168,7 +168,7 @@ export class DatabaseService {
   getCategories(data?) {
     let versionData = [];
     return new Promise((resolve, reject) => {
-      let query = '';      
+      let query = '';
       query = "Select COUNT(pwd.id) as totalpassword, ca.* from categories as ca LEFT JOIN password as pwd ON pwd.cat_id = ca.id group by ca.id";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
@@ -176,7 +176,7 @@ export class DatabaseService {
           for (let i = 0; i < rowLength; i++) {
             versionData.push(rs.rows.item(i));
           }
-          console.log(versionData)
+          //console.log(versionData)
           resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getCategories', 'Error : ' + JSON.stringify(error));
@@ -193,9 +193,9 @@ export class DatabaseService {
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
           let rowLength = rs.rows.length;
-         // console.log(rowLength)
-          if(rowLength > 0) versionData = rs.rows.item(0)
-          resolve(versionData);  
+          // //console.log(rowLength)
+          if (rowLength > 0) versionData = rs.rows.item(0)
+          resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getCategoriesById', 'Error : ' + JSON.stringify(error));
           reject(error);
@@ -203,18 +203,18 @@ export class DatabaseService {
       });
     });
   }
-  getpasswordById(data?) {   
+  getpasswordById(data?) {
     let versionData;
     return new Promise((resolve, reject) => {
       let query = '';
       query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id where pid = " + data;;
-     // query = "Select * from password where id = " + data;
+      // query = "Select * from password where id = " + data;
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
           let rowLength = rs.rows.length;
-         // console.log(rowLength)
-          if(rowLength > 0) versionData = rs.rows.item(0)
-          resolve(versionData);  
+          // //console.log(rowLength)
+          if (rowLength > 0) versionData = rs.rows.item(0)
+          resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getpasswordById', 'Error : ' + JSON.stringify(error));
           reject(error);
@@ -224,17 +224,19 @@ export class DatabaseService {
   }
 
   getPasswordList(data?) {
+    //console.log("227--------------", data)
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
-      if(data) {
+      if (data != '') {
+        localStorage.removeItem("tapToOpen")
         query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id where c.id = " + data;
 
-      }else{
+      } else {
 
         query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id";
       }
-      console.log(query)
+      //console.log(query)
       // query = "Select *  from password";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
@@ -242,7 +244,7 @@ export class DatabaseService {
           for (let i = 0; i < rowLength; i++) {
             versionData.push(rs.rows.item(i));
           }
-          console.log(versionData)
+          //console.log(versionData)
           resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getPasswordList', 'Error : ' + JSON.stringify(error));
@@ -253,7 +255,7 @@ export class DatabaseService {
   }
 
   setDate() {
-    //  console.log(date);
+    //  //console.log(date);
     return moment(new Date()).format("DD-MM-YYYY hh:mm A");
   }
 
@@ -300,14 +302,14 @@ export class DatabaseService {
   }
 
   deleteCategoryFromTable(id?) {
-    console.log("deleteCategoryFromTable");
+    //console.log("deleteCategoryFromTable");
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
       query = "DELETE from categories where id = " + id;
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
-          console.log(rs);
+          //console.log(rs);
           resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'deleteCategoryFromTable', 'Error : ' + JSON.stringify(error));
@@ -317,14 +319,14 @@ export class DatabaseService {
     });
   }
   deleteListFromTable(id?) {
-    console.log("deleteCategoryFromTable");
+    //console.log("deleteCategoryFromTable");
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
       query = "DELETE from password where id = " + id;
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
-          console.log(rs);
+          //console.log(rs);
           resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'deleteListFromTable', 'Error : ' + JSON.stringify(error));
@@ -347,7 +349,7 @@ export class DatabaseService {
       insertValues.push(data.user_id);
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          console.log("139", rs.rowsAffected);
+          //console.log("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'registerUser', 'Error : ' + JSON.stringify(error));
@@ -375,10 +377,10 @@ export class DatabaseService {
       insertValues.push(data.account_name);
       insertValues.push(data.account_desc);
       insertValues.push(data.account_username);
-      console.log(insertValues) 
+      //console.log(insertValues)
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          console.log("139", rs.rowsAffected);
+          //console.log("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'addpassword', 'Error : ' + JSON.stringify(error));
@@ -405,10 +407,10 @@ export class DatabaseService {
       insertValues.push(data.account_desc);
       insertValues.push(data.account_username);
       insertValues.push(data.pwd_id);
-      console.log(insertValues) 
+      //console.log(insertValues)
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          console.log("139", rs.rowsAffected);
+          //console.log("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'addpassword', 'Error : ' + JSON.stringify(error));
@@ -417,6 +419,50 @@ export class DatabaseService {
       });
     });
   }
-  
+
+
+  UpdateCategory(data?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "UPDATE categories SET name = ? , desc = ?, updated_date = ? , added_by = ? where id = ?";
+      insertValues.push(data.catName);
+      insertValues.push(data.catdesc);
+      insertValues.push(this.setDate());
+      insertValues.push(data.user_id);
+      insertValues.push(data.cat_edit_id);
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          resolve(rs.rowsAffected);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'UpdateCategory', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  UpdateLastViewPassword(data?) {
+    // alert(data)
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "UPDATE password SET last_view = ? where id = ?";
+      insertValues.push(this.setDate());
+      insertValues.push(data);
+      console.log(insertValues)
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          resolve(rs.rowsAffected);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'UpdateLastViewPassword', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
 
 }

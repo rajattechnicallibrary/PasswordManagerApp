@@ -13,7 +13,7 @@ import * as moment from "moment";
 })
 export class CategoriesPage implements OnInit {
 
-  fileName= 'Categories';
+  fileName = 'Categories';
   catArray: any
   lengthofCat: boolean = false
   Moment: any = moment;
@@ -32,7 +32,7 @@ export class CategoriesPage implements OnInit {
 
   ngOnInit() {
     localStorage.removeItem("cat_id");
-    this.loadPage(); 
+    this.loadPage();
   }
 
   loadPage() {
@@ -42,7 +42,7 @@ export class CategoriesPage implements OnInit {
       console.log("22", res)
       if (res.length > 0) this.lengthofCat = true; this.catArray = res
     }).catch((err) => {
-      console.log("25", err)
+      //console.log("25", err)
       this.catArray = ''
     })
   }
@@ -72,7 +72,7 @@ export class CategoriesPage implements OnInit {
   }
 
   ionViewWillEnter() {
-  this.loadPage()
+    this.loadPage()
 
     console.log(this.fileName, 'ionViewWillEnter')
 
@@ -117,4 +117,15 @@ export class CategoriesPage implements OnInit {
     this.navCtrl.navigateForward('/view-categories')
   }
 
+  checkMyVaild(date) {
+    
+    if (date == null) {
+      return false;
+    } else {
+      return moment(date, 'DD-MM-YYYY hh:mm A').format('hh:mm A')
+      // return true;
+
+    }
+   
+  }
 }

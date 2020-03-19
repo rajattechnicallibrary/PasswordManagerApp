@@ -11,6 +11,9 @@ import { NavController, Events } from '@ionic/angular';
 export class AddCategoriesPage implements OnInit {
   category_name = '';
   category_desc = '';
+  cat_edit_id = ''
+  isUpdate: boolean = false;
+
   constructor(
     public bridge: BridgeService,
     public database: DatabaseService,
@@ -20,6 +23,19 @@ export class AddCategoriesPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (localStorage.getItem("cat_edit_id")) {
+      this.isUpdate = true
+      this.cat_edit_id = localStorage.getItem("cat_edit_id");
+      this.database.getCategoriesById(this.cat_edit_id).then((res: any) => {
+        console.log(res)
+        this.category_name = res.name;
+        this.category_desc = res.desc;
+       localStorage.removeItem("cat_edit_id");
+
+      }).catch((err) => {
+        console.log(err)
+      }) 
+    }
   }
 
   save() {
@@ -43,6 +59,26 @@ export class AddCategoriesPage implements OnInit {
 
   cancel() {
     this.navCtrl.navigateForward('/categories')
+  }
+
+  Update() {
+    if (this.category_name == undefined || this.category_name == '') {
+      this.bridge.showErrorMsgByToast("Enter Category Name !!!");
+      return false;
+    }
+    let catdesc = this.category_desc
+    let catName = this.category_name
+    let cat_edit_id = this.cat_edit_id;
+    let data = { catdesc, catName, user_id: this.bridge.getUserData().id, cat_edit_id }
+
+    this.database.UpdateCategory(data).then((res) => {
+      this.bridge.presentAlert("Account Detail For " + catName + " Updated successfully !!!")
+      this.events.publish('fromPopoverEvent');
+      this.navCtrl.navigateForward('/categories')
+
+    }).catch(() => {
+
+    });
   }
 
 }

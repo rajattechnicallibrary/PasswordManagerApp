@@ -12,10 +12,11 @@ import * as moment from "moment";
 })
 export class ListPage implements OnInit {
 
-  Moment: any = moment;
+  moment: any = moment;
   catArray: any
   lengthofCat: boolean = false
-  tapToOpen
+  tapToOpen;
+  fileName = 'ListPage'
   constructor(
     public navCtrl: NavController,
     public database: DatabaseService,
@@ -27,43 +28,85 @@ export class ListPage implements OnInit {
 
   ) {
     this.loadPage();
+    //console.log("30")
   }
 
   ngOnInit() {
+    //console.log("34")
+
     this.events.publish('callagain')
     this.events.subscribe('callagain', () => {
       this.loadPage();
     });
   }
 
-  loadPage() {  
-    this.lengthofCat = false;
+
+  ionViewCanEnter() {
+    console.log(this.fileName, 'ionViewCanEnter')
+  }
+
+  ionViewCanLeave() {
+    console.log(this.fileName, 'ionViewCanLeave')
+
+  }
+
+  ionViewDidEnter() {
+    console.log(this.fileName, 'ionViewDidEnter')
+
+  }
+
+  ionViewDidLeave() {
+    console.log(this.fileName, 'ionViewDidLeave')
+
+  }
+
+  ionViewDidLoad() {
+    console.log(this.fileName, 'ionViewDidLoad')
+
+  }
+
+  ionViewWillEnter() {
+
+    console.log(this.fileName, 'ionViewWillEnter')
+
+  }
+
+  ionViewWillUnload() {
+    console.log(this.fileName, 'ionViewWillUnload')
+
+  }
+
+
+  loadPage() {
+    //console.log("43")
+    this.tapToOpen = '';
+    this.lengthofCat = false;     
     this.catArray = '';
-    console.log("list 35", "res")
-    if(localStorage.getItem("tapToOpen")){this.tapToOpen = localStorage.getItem("tapToOpen"); localStorage.removeItem("tapToOpen") }
+    ////console.log("list 35", localStorage.getItem("tapToOpen"))
+    if (localStorage.getItem("tapToOpen")) { this.tapToOpen = localStorage.getItem("tapToOpen"); localStorage.removeItem("tapToOpen") }
     this.database.getPasswordList(this.tapToOpen).then((res: any) => {
       console.log("22", res)
-      if (res.length > 0) this.lengthofCat = true; this.catArray = res
+      if (res.length > 0) this.lengthofCat = true; this.catArray = res; localStorage.removeItem("pass_id"); localStorage.removeItem("tapToOpen")
     }).catch((err) => {
-      console.log("25", err)
+      //console.log("25", err)
       this.catArray = ''
     })
   }
 
   async popOver(ev: any, id, name?) {
-    
-      localStorage.setItem("pass_id",id)
+
+    localStorage.setItem("pass_id", id)
 
     this.events.subscribe('Event_list', () => {
       this.loadPage();
     });
-   
+
     const popover = await this.popoverController.create({
       component: CategorieActivityPage,
       event: ev,
       translucent: true,
       showBackdrop: true,
-      componentProps: { cat_id: id, name: name, where: 'list'}
+      componentProps: { cat_id: id, name: name, where: 'list' }
     });
 
 
@@ -76,12 +119,12 @@ export class ListPage implements OnInit {
     this.navCtrl.navigateForward('/add-detail')
   }
   viewpassword(id) {
-    localStorage.setItem("pass_id",id)
+    localStorage.setItem("pass_id", id)
 
     this.events.subscribe('Event_list', () => {
       this.loadPage();
     });
     this.navCtrl.navigateForward('/auth-password')
   }
- 
-}
+
+}       

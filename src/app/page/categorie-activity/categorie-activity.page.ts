@@ -42,11 +42,13 @@ export class CategorieActivityPage implements OnInit {
       this.navCtrl.navigateForward('/view-categories')
     } else if (type == 'delete') {
       this.presentAlert(this.name, this.cat_id);
-    } else {
-
+    } else if (type == 'edit') {
+      localStorage.setItem("cat_edit_id", this.cat_id)
+      this.popoverController.dismiss()
+      this.navCtrl.navigateForward('/add-categories')
     }
     // this.navCtrl.navigateForward('/add-categories')
-  }
+  } 
 
   async presentAlert(name?, id?) {
     const confirm = await this.alertController.create({

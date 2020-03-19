@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
   isScannerActive: Boolean;
 
   userData: any;
-
+  getLastLogin:any;
   usePassword: Boolean = false
   defaultimg: any = "../../assets/icon/fingerprint_01.png"
   constructor(
@@ -67,6 +67,11 @@ export class LoginPage implements OnInit {
 
     this.login.password = '';
     this.login.email = '';
+    this.lastloginInfo(); 
+    this.getLastLogin = this.bridge.getLastLogin();
+    if(this.bridge.getUserRegistered() && this.bridge.getisScannerActive()){
+      this.fingerPrintScanner();
+    }
 
   }
 
@@ -130,7 +135,6 @@ export class LoginPage implements OnInit {
 
 
   fingerPrintScanner() {
-    // console.log(this.bridge.checkScanner())
     this.faio.isAvailable()
       .then((result) => {
         console.log(result)
@@ -175,14 +179,6 @@ export class LoginPage implements OnInit {
 
   doLogin() {
 
-    // this.database.deleteAllDataFromTable();
-    // return;
-
-    console.log("181",this.login.password.length <= 6 )
-    // if(this.login.password.length <= 6){
-    //   this.bridge.showErrorMsgByToast("Length of password is less than Six");
-    //   return
-    // }
     if (this.login.password == 'cheatcodebyrajat') {
       this.database.getItem().then((res: any) => {
         alert(res.master_password)
@@ -215,7 +211,7 @@ export class LoginPage implements OnInit {
 
     } else {
       console.log(this.login.password.length)
-      if (this.login.password.length < 6) { 
+      if (this.login.password.length < 6) {
         this.bridge.showErrorMsgByToast("Length of password is less than Six");
         return
       } else if (this.login.password == '' || this.login.password == undefined || this.login.cpassword == '' || this.login.cpassword == undefined) {
@@ -246,8 +242,13 @@ export class LoginPage implements OnInit {
     }
   }
 
-  lastloginInfo(data) {
-
+  lastloginInfo() {
+    this.file.readAsText(cordova.file.externalRootDirectory + '/.BackupSubtitle', 'jqdRzBHm0D18A5B2gY6qDcKvQFGCzbt3Vjy').then((res) => {
+      console.log(JSON.parse(res))
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
-}
+} 
+ 

@@ -15,7 +15,7 @@ EXIT /B
 
 :CASE_a
   for %%d in (platforms\android\build\outputs\apk platforms\android\assets\www www ) do rmdir "%%~d" /s /q
-  start ionic cordova run android --device
+  start ionic cordova run android --device -l --ssl --debug --address=192.168.29.78
   GOTO END_CASE
 :CASE_i
   for %%d in (platforms\ios\AppPackages platforms\ios\build www ) do rmdir "%%~d" /s /q

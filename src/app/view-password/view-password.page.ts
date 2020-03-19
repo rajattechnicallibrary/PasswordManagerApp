@@ -36,6 +36,7 @@ export class ViewPasswordPage implements OnInit {
     console.log(pass_id)
     this.database.getpasswordById(pass_id).then((res: any) => {
       console.log(res)
+      this.database.UpdateLastViewPassword(localStorage.getItem("pass_id"))
       if (res.length > 0) this.lengthofCat = true; this.catArray = res
     }).catch((err) => {
       this.catArray = ''
