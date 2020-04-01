@@ -27,7 +27,7 @@ export class ListPage implements OnInit {
 
 
   ) {
-    this.loadPage();
+    this.loadPage(30);
     //console.log("30")
   }
 
@@ -36,7 +36,7 @@ export class ListPage implements OnInit {
 
     this.events.publish('callagain')
     this.events.subscribe('callagain', () => {
-      this.loadPage();
+      this.loadPage(39);
     });
   }
 
@@ -66,7 +66,7 @@ export class ListPage implements OnInit {
   }
 
   ionViewWillEnter() {
-
+    if (!this.tapToOpen) this.loadPage(69);
     console.log(this.fileName, 'ionViewWillEnter')
 
   }
@@ -77,13 +77,16 @@ export class ListPage implements OnInit {
   }
 
 
-  loadPage() {
-    //console.log("43")
+  loadPage(no) {
+    console.log("line Number", no)
     this.tapToOpen = '';
-    this.lengthofCat = false;     
+    this.lengthofCat = false;
     this.catArray = '';
-    ////console.log("list 35", localStorage.getItem("tapToOpen"))
-    if (localStorage.getItem("tapToOpen")) { this.tapToOpen = localStorage.getItem("tapToOpen"); localStorage.removeItem("tapToOpen") }
+    console.log("list 35", localStorage.getItem("tapToOpen"))
+    if (localStorage.getItem("tapToOpen")) {
+      this.tapToOpen = localStorage.getItem("tapToOpen");
+      // localStorage.removeItem("tapToOpen")
+    }
     this.database.getPasswordList(this.tapToOpen).then((res: any) => {
       console.log("22", res)
       if (res.length > 0) this.lengthofCat = true; this.catArray = res; localStorage.removeItem("pass_id"); localStorage.removeItem("tapToOpen")
@@ -98,7 +101,7 @@ export class ListPage implements OnInit {
     localStorage.setItem("pass_id", id)
 
     this.events.subscribe('Event_list', () => {
-      this.loadPage();
+      this.loadPage(104);
     });
 
     const popover = await this.popoverController.create({
@@ -114,7 +117,7 @@ export class ListPage implements OnInit {
   }
   addpassword() {
     this.events.subscribe('Add_Event_list', () => {
-      this.loadPage();
+      this.loadPage(120);
     });
     this.navCtrl.navigateForward('/add-detail')
   }
@@ -122,7 +125,7 @@ export class ListPage implements OnInit {
     localStorage.setItem("pass_id", id)
 
     this.events.subscribe('Event_list', () => {
-      this.loadPage();
+      this.loadPage(128);
     });
     this.navCtrl.navigateForward('/auth-password')
   }

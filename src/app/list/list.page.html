@@ -29,8 +29,8 @@
         <p  style="font-weight: 600;color:black" *ngIf="x.user_name">Username: {{x.user_name}}</p>  
         <p  *ngIf="x.cname">Category: {{x.cname}}</p>   
         <p color="danger" *ngIf="x.hint">Hint: {{x.hint}}</p> 
-        <p color="danger" *ngIf="x.updated_date" text-right style="font-style: italic;">Last Updated: {{ moment(x.updated_date, 'DD-MM-YYYY hh:mm A').format('hh:mm A')}}</p> 
         <p color="danger" *ngIf="x.last_view" text-right style="font-style: italic;">Last Seen: {{ moment(x.last_view, 'DD-MM-YYYY hh:mm A').format('hh:mm A')}}</p> 
+        <!-- <p color="danger" *ngIf="x.updated_date" text-right style="font-style: italic;">Last Updated: {{ moment(x.updated_date, 'DD-MM-YYYY hh:mm A').format('hh:mm A')}}</p>  -->
       </ion-label>
       <ion-icon style="font-size: 2.5em" ios="ios-more" md="md-more" class="moreIcon"
         (click)="popOver($event, x.id, x.name)"></ion-icon>

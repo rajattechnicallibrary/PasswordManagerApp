@@ -4,6 +4,8 @@ import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { Storage } from '@ionic/storage';
 
+declare var cordova: any;
+declare var window: any;
 
 @Injectable({
   providedIn: 'root'
@@ -79,7 +81,7 @@ export class BridgeService {
   }
 
   getDate() {
-    return this.startDate
+    return this.startDate = new Date();
   }
 
   detectBoolean(key) {
@@ -115,7 +117,7 @@ export class BridgeService {
     }
 
     this.loaderActive = await this.loadingCtrl.create({
-      message: "msg",
+      message: msg,
       duration: duration
     });
 
@@ -183,6 +185,24 @@ export class BridgeService {
     return text;
   }
 
+
+  appInit(data, no) {
+    window.resolveLocalFileSystemURL(data,
+      function (fileSystem) {
+        var reader = fileSystem.createReader();
+        reader.readEntries(
+          function (entries) {
+            console.log(no, entries);
+          },
+          function (err) {
+            console.log(no, err);
+          }
+        );
+      }, function (err) {
+        console.log(err);
+      }
+    );
+  }
 
 
 }

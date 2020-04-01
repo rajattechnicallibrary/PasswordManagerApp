@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <!-- <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> -->
+    <ion-title text-left>
+      My Notes
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset>
+    <ion-col>
+      <ion-title text-center>
+        We will Saved Notes Automatically
+      </ion-title>
+    </ion-col>
+    <ion-item class="border">
+      <ion-input type="text" [(ngModel)]="notes.title" placeholder="Title" class="userIcon">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea rows="20" cols="20" [(ngModel)]="notes.content" (keyup)="savedMyData()"
+        placeholder="Add Your Notes">
+      </ion-textarea>
+    </ion-item>
+    <ion-item text-center lines="none" class="footerTxt1">
+      <ion-col *ngIf="IsnotesSaved">
+        Last Saved {{Moment(myday, 'DD-MM-YYYY hh:mm A').format('DD-MM-YYYY hh:mm A')}} <ion-icon
+          name="information-circle"></ion-icon>
+      </ion-col>
+
+    </ion-item>
+  </ion-list>
+</ion-content>

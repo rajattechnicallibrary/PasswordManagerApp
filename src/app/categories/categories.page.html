@@ -27,7 +27,7 @@
       <ion-label (click)="viewTap(x.id)">
         <h2 class="sizefont">Category Name: {{x.name}}</h2>  
         <p color="danger" >ID: CATID{{x.id}}{{j}}</p>   
-        <h3 *ngIf="x.desc">Desc: {{x.desc}}</h3>
+        <!-- <h3 *ngIf="x.desc">Desc: {{x.desc}}</h3> -->
         <p color="danger" text-right style="font-style: italic;" *ngIf="checkMyVaild(x.updated_date)" >Last Update: {{ checkMyVaild(x.updated_date)}}</p> 
       </ion-label>
       <ion-icon style="font-size: 2.5em" ios="ios-more" md="md-more" class="moreIcon"

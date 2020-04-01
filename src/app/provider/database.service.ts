@@ -65,12 +65,14 @@ export class DatabaseService {
     return this.db;
   }
 
-  seeddb() {
+  InitQueryAtStartUp() {
     try {
       this.http.get('assets/initDB.sql', { responseType: 'text' })
         .subscribe(sql => {
+
           this.sqlitePorter.importSqlToDb(this.db, sql)
             .then(_ => {
+              console.log("Imported InitDB.sql")
               this.dbReady.next(true);
             })
             .catch(e => console.error(e));
@@ -83,14 +85,14 @@ export class DatabaseService {
   }
 
   deleteAllDataFromTable() {
-    //console.log("rs");
+    //alert("rs");
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
       query = "DELETE from user";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
-          //console.log(rs);
+          //alert(rs);
           resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'deleteAllDataFromTable', 'Error : ' + JSON.stringify(error));
@@ -113,7 +115,7 @@ export class DatabaseService {
             versionData = rs.rows.item(0)
           }
 
-          //console.log("108", versionData);
+          //alert("108", versionData);
           resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getItem', 'Error : ' + JSON.stringify(error));
@@ -134,7 +136,7 @@ export class DatabaseService {
       insertValues.push(this.setDate());
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          //console.log("139", rs.rowsAffected);
+          //alert("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'registerUser', 'Error : ' + JSON.stringify(error));
@@ -176,7 +178,7 @@ export class DatabaseService {
           for (let i = 0; i < rowLength; i++) {
             versionData.push(rs.rows.item(i));
           }
-          //console.log(versionData)
+          //alert(versionData)
           resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getCategories', 'Error : ' + JSON.stringify(error));
@@ -193,7 +195,7 @@ export class DatabaseService {
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
           let rowLength = rs.rows.length;
-          // //console.log(rowLength)
+          // //alert(rowLength)
           if (rowLength > 0) versionData = rs.rows.item(0)
           resolve(versionData);
         }), ((tx, error) => {
@@ -212,7 +214,7 @@ export class DatabaseService {
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
           let rowLength = rs.rows.length;
-          // //console.log(rowLength)
+          // //alert(rowLength)
           if (rowLength > 0) versionData = rs.rows.item(0)
           resolve(versionData);
         }), ((tx, error) => {
@@ -224,7 +226,7 @@ export class DatabaseService {
   }
 
   getPasswordList(data?) {
-    //console.log("227--------------", data)
+    //alert("227--------------" + data)
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
@@ -236,7 +238,7 @@ export class DatabaseService {
 
         query = "Select password.id as pid, c.id as cid, password.name as pname, c.name as cname, password.*  from password INNER JOIN categories c ON c.id = password.cat_id";
       }
-      //console.log(query)
+      //alert(query)
       // query = "Select *  from password";
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
@@ -244,7 +246,7 @@ export class DatabaseService {
           for (let i = 0; i < rowLength; i++) {
             versionData.push(rs.rows.item(i));
           }
-          //console.log(versionData)
+          //alert(versionData)
           resolve(versionData);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'getPasswordList', 'Error : ' + JSON.stringify(error));
@@ -255,7 +257,7 @@ export class DatabaseService {
   }
 
   setDate() {
-    //  //console.log(date);
+    //  //alert(date);
     return moment(new Date()).format("DD-MM-YYYY hh:mm A");
   }
 
@@ -302,14 +304,14 @@ export class DatabaseService {
   }
 
   deleteCategoryFromTable(id?) {
-    //console.log("deleteCategoryFromTable");
+    //alert("deleteCategoryFromTable");
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
       query = "DELETE from categories where id = " + id;
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
-          //console.log(rs);
+          //alert(rs);
           resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'deleteCategoryFromTable', 'Error : ' + JSON.stringify(error));
@@ -319,14 +321,14 @@ export class DatabaseService {
     });
   }
   deleteListFromTable(id?) {
-    //console.log("deleteCategoryFromTable");
+    //alert("deleteCategoryFromTable");
     let versionData = [];
     return new Promise((resolve, reject) => {
       let query = '';
       query = "DELETE from password where id = " + id;
       this.getDB().transaction((tx) => {
         tx.executeSql(query, [], ((tx, rs) => {
-          //console.log(rs);
+          //alert(rs);
           resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'deleteListFromTable', 'Error : ' + JSON.stringify(error));
@@ -349,8 +351,8 @@ export class DatabaseService {
       insertValues.push(data.user_id);
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          //console.log("139", rs.rowsAffected);
-          resolve(rs.rowsAffected);
+          //alert("139", rs.rowsAffected);
+          resolve(rs);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'registerUser', 'Error : ' + JSON.stringify(error));
           reject(error);
@@ -377,10 +379,10 @@ export class DatabaseService {
       insertValues.push(data.account_name);
       insertValues.push(data.account_desc);
       insertValues.push(data.account_username);
-      //console.log(insertValues)
+      //alert(insertValues)
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          //console.log("139", rs.rowsAffected);
+          //alert("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'addpassword', 'Error : ' + JSON.stringify(error));
@@ -407,10 +409,10 @@ export class DatabaseService {
       insertValues.push(data.account_desc);
       insertValues.push(data.account_username);
       insertValues.push(data.pwd_id);
-      //console.log(insertValues)
+      //alert(insertValues)
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
-          //console.log("139", rs.rowsAffected);
+          //alert("139", rs.rowsAffected);
           resolve(rs.rowsAffected);
         }), ((tx, error) => {
           this.log.log(this.fileName, 'addpassword', 'Error : ' + JSON.stringify(error));
@@ -452,7 +454,7 @@ export class DatabaseService {
       query = "UPDATE password SET last_view = ? where id = ?";
       insertValues.push(this.setDate());
       insertValues.push(data);
-      console.log(insertValues)
+      // alert(insertValues)
       this.getDB().transaction((tx) => {
         tx.executeSql(query, insertValues, ((tx, rs) => {
           resolve(rs.rowsAffected);
@@ -464,5 +466,145 @@ export class DatabaseService {
     });
   }
 
+  checkCategory(password) {
+    //  alert(password)
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select * from categories where name = '" + password.catName + "'";
+      // alert(query)
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          if (rs.rows.length != 0) {
+            versionData = rs.rows.item(0)
+          }
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'checkCategory', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  deleteAllDataFromCat(data) {
+    //alert("rs");
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "DELETE from password where cat_id = " + data;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          //alert(rs);
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'deleteAllDataFromCat', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  getNotes(data?) {
+
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select * From notes";
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          let rowLength = rs.rows.length;
+          for (let i = 0; i < rowLength; i++) {
+            versionData.push(rs.rows.item(i));
+          }
+          //alert(versionData) 
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getNotes', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  getNotesById(data?) {
+
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Select * From notes where id = " + data;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          let rowLength = rs.rows.length;
+          if (rowLength > 0) versionData = rs.rows.item(0)
+          resolve(versionData);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'getNotesById', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+  saveMyNotes(user?) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "INSERT INTO notes(notes_content, created_date, updated_date, status, added_by, notes_title) VALUES (?,?,?,?,?,?)";
+      insertValues.push(user.content);
+      insertValues.push(this.setDate());
+      insertValues.push(this.setDate());
+      insertValues.push('active');
+      insertValues.push(user.user_id);
+      insertValues.push(user.title);
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          //alert("139", rs.rowsAffected);
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'saveMyNotes', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  updateMyNotes(data) {
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      let insertValues = [];
+      query = "UPDATE notes SET notes_content = ? , notes_title = ?, updated_date = ? where id = ?";
+      insertValues.push(data.content);
+      insertValues.push(data.title);
+      insertValues.push(this.setDate());
+      insertValues.push(data.last_id);
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, insertValues, ((tx, rs) => {
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'updateMyNotes', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
+
+  deleteNotes(data?) {
+    console.log(data)
+    let versionData = [];
+    return new Promise((resolve, reject) => {
+      let query = '';
+      query = "Delete  from notes where id = " + data;
+      this.getDB().transaction((tx) => {
+        tx.executeSql(query, [], ((tx, rs) => {
+          resolve(rs);
+        }), ((tx, error) => {
+          this.log.log(this.fileName, 'deleteNotes', 'Error : ' + JSON.stringify(error));
+          reject(error);
+        }));
+      });
+    });
+  }
 
 }

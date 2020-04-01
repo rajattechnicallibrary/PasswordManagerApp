@@ -9,70 +9,60 @@ import { Platform } from '@ionic/angular';
 })
 export class SettingsPage implements OnInit {
   product: any;
-
-  constructor(public platform: Platform, private iap2: InAppPurchase2) { }
+  pid = 'password_250';
+ 
+  constructor(public platform: Platform, private store: InAppPurchase2) { }
 
   ngOnInit() {
+    this.Setup();
   }
 
-  ionViewDidEnter() {
-    this.platform.ready().then(() => {
-      this.setup();
-    })
-  }
-  setup() {
-    this.iap2.verbosity = this.iap2.DEBUG;
-    this.iap2.register({
+  Setup() {
+    this.store.verbosity = this.store.DEBUG;
+    this.store.register({
       id: 'password_250',
-      type: this.iap2.CONSUMABLE
+      type: this.store.CONSUMABLE
     });
-    this.product = this.iap2.get('password_250');
-    alert('Purchase Succesful ' + JSON.stringify(this.product));
-    this.registerHandlersForPurchase('password_250');
-    // restore purchase
-    this.iap2.refresh();
+    this.product = this.store.get('password_250');
+    //this.store.refresh();
   }
 
-  checkout() {
-    this.registerHandlersForPurchase('password_250');
-    try {
-      let product = this.iap2.get('password_250');
-      alert('Product Info: ' + JSON.stringify(product));
-      this.iap2.order('password_250').then((p) => {
-        alert('Purchase Succesful ' + JSON.stringify(p));
-      }).catch((e) => {
-        alert('Error Ordering From Store' + e);
+  checkout(){
+    console.log(JSON.stringify(this.store.get(this.pid)));
+  }
+
+  refresh(){
+    this.store.refresh()//
+  } 
+
+  registerHandlersForPurchase(){
+   // this.store.refresh();
+    this.store.order(this.pid)
+    .then((r)=>{console.log(r)}).error((e)=>{console.log(e)})
+    let self = this.store;
+      this.store.when(this.pid).updated(function (product) {
+        console.log('Purchase Succesful ' + JSON.stringify(product));
+        if (product.loaded && product.valid && product.state === self.APPROVED && product.transaction != null) {
+          product.finish();
+        }
       });
-      alert('45');
-    } catch (err) {
-      alert('Error Ordering 46' + JSON.stringify(err));
-    }
-  }
-
-  registerHandlersForPurchase(productId) {
-    let self = this.iap2;
-    this.iap2.when(productId).updated(function (product) {
-      alert('Purchase Succesful ' + JSON.stringify(product));
-      if (product.loaded && product.valid && product.state === self.APPROVED && product.transaction != null) {
+      this.store.when(this.pid).registered((product: IAPProduct) => {
+        console.log(` owned ` + JSON.stringify(product));
+      });
+      this.store.when(this.pid).owned((product: IAPProduct) => {
+        console.log("wned" + JSON.stringify(product));
         product.finish();
-      }
-    });
-    this.iap2.when(productId).registered((product: IAPProduct) => {
-      alert(` owned `  + JSON.stringify(product));
-    });
-    this.iap2.when(productId).owned((product: IAPProduct) => {
-      alert("wned"  + JSON.stringify(product));
-      product.finish();
-    });
-    this.iap2.when(productId).approved((product: IAPProduct) => {
-      alert('approved' + JSON.stringify(product));
-      product.finish();
-    });
-    this.iap2.when(productId).refunded((product: IAPProduct) => {
-      alert('refunded' + JSON.stringify(product));
-    });
-    this.iap2.when(productId).expired((product: IAPProduct) => {
-      alert('expired' + JSON.stringify(product));
-    });
+      });
+      this.store.when(this.pid).approved((product: IAPProduct) => {
+        console.log('approved' + JSON.stringify(product));
+        product.finish();
+      });
+      this.store.when(this.pid).refunded((product: IAPProduct) => {
+        console.log('refunded' + JSON.stringify(product));
+      });
+      this.store.when(this.pid).expired((product: IAPProduct) => {
+        console.log('expired' + JSON.stringify(product));
+      });
   }
 }
+ 

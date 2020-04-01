@@ -47,7 +47,8 @@ export class AddCategoriesPage implements OnInit {
     let catName = this.category_name
     let data = { catdesc, catName, user_id: this.bridge.getUserData().id }
 
-    this.database.addcategory(data).then(() => {
+    this.database.addcategory(data).then((rep) => {
+      console.log("51-----------", rep)
       this.bridge.presentAlert("Category " + catName + " name added successfully !!!")
       this.events.publish('fromPopoverEvent');
       this.navCtrl.navigateForward('/categories')

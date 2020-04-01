@@ -22,9 +22,11 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { CategorieActivityPageModule } from './page/categorie-activity/categorie-activity.module';
+import { ListPageModule } from './notes/list/list.module';
 import { ViewPageModule } from './page/view/view.module';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
+import { AppLauncher } from '@ionic-native/app-launcher/ngx';
 
 
 @NgModule({
@@ -37,12 +39,14 @@ import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
     HttpClientModule,
     IonicStorageModule.forRoot(),
     CategorieActivityPageModule,
-    ViewPageModule
+    ViewPageModule,
+    ListPageModule
     // TooltipsModule.forRoot(),
     // BrowserAnimationsModule
   ],
   providers: [
     StatusBar,
+    AppLauncher,
     SplashScreen,
     SQLite,
     SQLitePorter,

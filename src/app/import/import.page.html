@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-row>
+      <ion-col col-6 class="cstmIcontitle">
+        <ion-title>
+          Import - Export
+        </ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-progress-bar *ngIf="Isprogress" type="indeterminate"></ion-progress-bar>
+  <span *ngIf="myexportedData.length > 0">
+    <ion-list lines="none" >
+      <ion-list-header>
+        <h4>Import</h4>
+      </ion-list-header>
+      <ion-item *ngFor="let x of myexportedData; let i = index">
+        <ion-col col-4 text-left>
+          <p>Last Imported</p>
+        </ion-col>
+        <ion-col col-6 text-right>
+          <p>{{checkMyVaild(x.myday)}}</p>
+        </ion-col>
+      </ion-item>
+    </ion-list>
+  </span>
+  <ion-list lines="none" *ngIf="myexportedData.length == 0">
+    <ion-list-header text-center>
+      <h4>Not Imported Yet</h4>
+    </ion-list-header>
+  </ion-list>
+  <ion-button expand="block" (click)="imported()">import Your Data</ion-button>
+</ion-content>

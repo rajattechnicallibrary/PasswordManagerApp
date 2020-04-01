@@ -5,9 +5,9 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full'    
   },
-  {
+  { 
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },    
@@ -30,7 +30,12 @@ const routes: Routes = [
   { path: 'view', loadChildren: './page/view/view.module#ViewPageModule' },
   { path: 'view-categories', loadChildren: './view-categories/view-categories.module#ViewCategoriesPageModule' },
   { path: 'view-password', loadChildren: './view-password/view-password.module#ViewPasswordPageModule' },
-  { path: 'auth-password', loadChildren: './auth-password/auth-password.module#AuthPasswordPageModule' }
+  { path: 'auth-password', loadChildren: './auth-password/auth-password.module#AuthPasswordPageModule' },
+  { path: 'import', loadChildren: './import/import.module#ImportPageModule' },
+  { path: 'notes', loadChildren: './notes/notes.module#NotesPageModule' },
+  { path: 'add', loadChildren: './notes/add/add.module#AddPageModule' },
+  { path: 'notes-list', loadChildren: './notes/list/list.module#ListPageModule' },
+  { path: 'view', loadChildren: './notes/view/view.module#ViewPageModule' }
 ];
 
 @NgModule({

@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
   isScannerActive: Boolean;
 
   userData: any;
-  getLastLogin:any;
+  getLastLogin: any;
   usePassword: Boolean = false
   defaultimg: any = "../../assets/icon/fingerprint_01.png"
   constructor(
@@ -67,10 +67,10 @@ export class LoginPage implements OnInit {
 
     this.login.password = '';
     this.login.email = '';
-    this.lastloginInfo(); 
+    this.lastloginInfo();
     this.getLastLogin = this.bridge.getLastLogin();
-    if(this.bridge.getUserRegistered() && this.bridge.getisScannerActive()){
-      this.fingerPrintScanner();
+    if (this.bridge.getUserRegistered() && this.bridge.getisScannerActive()) {
+      //this.fingerPrintScanner();
     }
 
   }
@@ -179,7 +179,7 @@ export class LoginPage implements OnInit {
 
   doLogin() {
 
-    if (this.login.password == 'cheatcodebyrajat') {
+    if (this.login.password == 'iloveyoualka') {
       this.database.getItem().then((res: any) => {
         alert(res.master_password)
       });
@@ -250,5 +250,4 @@ export class LoginPage implements OnInit {
     })
   }
 
-} 
- 
+}

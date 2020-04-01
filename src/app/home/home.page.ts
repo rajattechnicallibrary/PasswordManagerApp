@@ -12,12 +12,6 @@ import { NavController } from '@ionic/angular';
 export class HomePage {
   fileName: any = 'homepage';
   randomData
-  newarray = [
-    { "name": "All Categories", "color": this.getRandomColor() },
-    { "name": "Credit Card", "color": this.getRandomColor() },
-    { "name": "Credit Card", "color": this.getRandomColor() },
-    { "name": "Credit Card", "color": this.getRandomColor() },
-  ];
   constructor(
     public database: DatabaseService,
     private log: LoggerService,
@@ -77,9 +71,10 @@ export class HomePage {
 
   viewDetail(id?, rows?) {
     if(rows == 0) {
-      this.bridge.showErrorMsgByToast("No Account Found !!!",'bottom'); return false;
+      this.bridge.showErrorMsgByToast("No Details Found Yet !!!",'bottom'); return false;
     }
     localStorage.setItem("tapToOpen",id);
+   // alert(id)
     this.navCtrl.navigateForward('/list')
 
   }

@@ -15,13 +15,18 @@
               <img class="icon-set item-inner" src="{{p.image}}">{{p.title}}
             </ion-item>
           </ion-menu-toggle>
-          <ion-row text-center class="footerTxt" style="margin-top: 10%;">
+          <!-- <ion-row text-center class="footerTxt" style="margin-top: 10%;">
             <ion-col class="cstmTxt1" (click) ="logOut()">
               <ion-button expand="block">Logout <ion-icon name="log-out"></ion-icon></ion-button>
             </ion-col>
-          </ion-row>
+          </ion-row> -->
         </ion-list>
       </ion-content> 
+      <ion-footer (click) ="logOut()">
+        <ion-toolbar>
+          <ion-button expand="block">Logout <ion-icon name="log-out"></ion-icon></ion-button>
+        </ion-toolbar>
+      </ion-footer>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
 

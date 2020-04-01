@@ -11,10 +11,11 @@ import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Storage } from '@ionic/storage';
 import { debug } from 'util';
-import { BridgeService } from './provider/bridge.service'; 
+import { BridgeService } from './provider/bridge.service';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
- 
-declare var cordova: any; 
+import { AppLauncher, AppLauncherOptions } from '@ionic-native/app-launcher/ngx';
+
+declare var cordova: any;
 declare var window: any;
 
 
@@ -27,28 +28,34 @@ export class AppComponent {
 
   lastTimeBackPress = 2;
   timePeriodToExit = 2222;
-  activePage:any;
+  activePage: any;
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
 
 
- 
+
   public appPages = [
     { title: 'Dashboard', url: '/home', image: "assets/icon/home.png" },
     { title: 'Categories', url: '/categories', image: "assets/icon/add.png" },
     // { title: 'Add Categories', url: '/add-categories', image: "assets/icon/add.png" },
     // { title: 'Add Detail', url: '/add-detail', image: "assets/icon/add.png" },
     { title: 'Secure List', url: '/list', image: "assets/icon/list.png" },
+    { title: 'Notes', url: '/notes', image: "assets/icon/notes.png" },
     { title: 'Change Password', url: '/change-password', image: "assets/icon/change_password.png" },
     { title: 'Share', url: '/share-app', image: "assets/icon/share.png" },
     { title: 'Contact Us', url: '/contact-us', image: "assets/icon/contactus.png" },
     { title: 'About Us', url: '/about-us', image: "assets/icon/aboutus.png" },
-    { title: 'Legal Terms', url: '/legal-terms', image: "assets/icon/legal.png" },
-    { title: 'FAQ', url: '/faq', image: "assets/icon/faq.png" },
-    { title: 'Settings', url: '/settings', image: "assets/icon/settings.png" },
+    // { title: 'Legal Terms', url: '/legal-terms', image: "assets/icon/legal.png" },
+    // { title: 'FAQ', url: '/faq', image: "assets/icon/faq.png" },
     
+    // { title: 'Settings', url: '/settings', image: "assets/icon/settings.png" },
+
   ];
+  if() {
+
+  }
   fileName: any = 'appPage';
- currentUrl
+  currentUrl
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -70,20 +77,40 @@ export class AppComponent {
     private faio: FingerprintAIO,
     public alertController: AlertController,
     public events: Events,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private appLauncher: AppLauncher,
 
 
 
   ) {
-     var url = window.location.href;
-     let stack = url.split("/");
-     let len = stack.length
+    var url = window.location.href;
+    let stack = url.split("/");
+    let len = stack.length
     this.currentUrl = this.route.snapshot.url
-   // console.log(this.navCtrl)
-   console.log(this.currentUrl);
-     this.initializeApp();
+    // console.log(this.navCtrl)
+    console.log(this.currentUrl);
+    this.initializeApp();
     // this.bridge.activeLoader()
     this.platform.ready().then((res) => {
+
+      const options: AppLauncherOptions = {
+      }
+      options.packageName = 'com.hybrid.plocker'
+
+      this.appLauncher.canLaunch(options)
+        .then((canLaunch: boolean) => this.appPages.push({ title: 'Sync From Old App', url: '/import', image: "assets/icon/import.png" }))
+        .catch((error: any) => console.error('plocker is not available'));
+
+
+      var notificationOpenedCallback = function (jsonData) {
+        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+      };
+
+      window["plugins"].OneSignal 
+        .startInit("9fb741ff-4185-47e6-b23a-aef230b05394", "843498396171")
+        .handleNotificationOpened(notificationOpenedCallback)
+        .endInit();
+
 
       this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
         result => console.log('Has permission?', result.hasPermission),
@@ -136,6 +163,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then((res) => {
+      this.database.InitQueryAtStartUp()
       this.file.checkFile(cordova.file.dataDirectory, "plocker.sqlite").then(res => {
         this.log.log(this.fileName, 'initializeApp', 'checkFile dataDirectory:- ' + JSON.stringify(res));
       }).catch(err => {
@@ -160,61 +188,41 @@ export class AppComponent {
       })
 
 
-      // window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + "/www/assets/",
-      //   function (fileSystem) {
-      //     var reader = fileSystem.createReader();
-      //     reader.readEntries(
-      //       function (entries) {
-      //         console.log(entries);
-      //       },
-      //       function (err) {
-      //         console.log(err);
-      //       }
-      //     );
-      //   }, function (err) {
-      //     console.log(err);
-      //   }
-      // );
 
+
+      // this.appInit(cordova.file.applicationDirectory, "176")
+      // this.appInit(cordova.file.applicationDirectory + "/www/assets/", "177")
+      this.appInit(cordova.file.dataDirectory, "178")
+      // this.appInit(cordova.file.dataDirectory, "178")
+      // this.appInit(cordova.file.applicationStorageDirectory, "180")
+      // this.appInit(cordova.file.externalApplicationStorageDirectory, "181")
+      // this.appInit(cordova.file.applicationDirectory + "/www/", "177")
+      this.appInit(cordova.file.applicationStorageDirectory + "databases", "183")
 
       // //  alert(this.bridge.getUserRegistered())
-      // // this.appInit()
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString("#dc1150");
-     
+
 
     });
   }
 
-  appInit() {
-
-    // this.file.checkFile(cordova.file.dataDirectory, "plocker.sqlite").then(res => {
-    //   console.log("98", res);
-    //   this.log.log(this.fileName, 'appInit', '98 appInit :- ' + res);
-    //   this.splashScreen.hide();
-    //   return;
-    // }).catch(err => {
-
-
-    //   this.file.copyFile(cordova.file.applicationDirectory + "/www/assets/", "plocker.sqlite", cordova.file.dataDirectory, "plocker.sqlite").then(res => {
-    //     this.log.log(this.fileName, 'appInit', 'copyFile :- ' + JSON.stringify(res));
-    //     this.sqLiteCopyDb.copyDbFromStorage("plocker.sqlite", 0, cordova.file.dataDirectory + "/plocker.sqlite", true).then(res => {
-    //     }).catch(err => {
-    //       // this.appInit()
-    //       this.sqLiteCopyDb.copy("plocker.sqlite", 0).then(res => {
-    //         this.log.log(this.fileName, 'appInit', 'copyDbFromStorage :- ' + err);
-    //       }).catch(err => {
-    //         this.log.log(this.fileName, 'appInit', 'sqLiteCopyDb.copy :- ' + err);
-    //       });
-    //     });
-    //   }).catch(err => {
-    //     // this.appInit()
-    //     this.log.log(this.fileName, 'appInit', '114 copyFile :- ' + JSON.stringify(err));
-    //     return
-    //   });
-    //   // this.appInit()
-    //   ///this.log.log(this.fileName, 'appInit', 'catch :- ' + JSON.stringify(err));
-    // });
+  appInit(data, no) {
+    window.resolveLocalFileSystemURL(data,
+      function (fileSystem) {
+        var reader = fileSystem.createReader();
+        reader.readEntries(
+          function (entries) {
+            console.log(no, entries);
+          },
+          function (err) {
+            console.log(no, err);
+          }
+        );
+      }, function (err) {
+        console.log(err);
+      }
+    );
   }
 
   backButtonEvent() {
@@ -238,7 +246,11 @@ export class AppComponent {
         this.presentAlert("Do You Want To Exit App ?")
       } else if (this.router.url === '/home') {
         this.navCtrl.back();
+      } else if (this.router.url === '/notes') {
+
+        // this.bridge.showErrorMsgByToast('Notes Saved Successfully !!!')
       } else {
+
         this.navCtrl.back();
       }
     });
@@ -249,6 +261,7 @@ export class AppComponent {
     localStorage.removeItem('userData')
     this.bridge.setUserData(false)
     this.menu.close()
+    this.bridge.showErrorMsgByToast('Logout Successfully !!!')
     this.navCtrl.navigateForward('/login');
   }
 
@@ -276,15 +289,14 @@ export class AppComponent {
   }
 
   sharingApp() {
-    //   console.log("Sharing app")
-    window.plugins.socialsharing.share('Password Locker App that lets you lock Important Information ! No Need of Internet Connection', 'Password Locker App', 'https://lh3.googleusercontent.com/XvR0kocuyzkvwTwZO-fE2oPlcbXTt5leyAvgG3NiLYQF47I2TQIz5CJEbwPJmUgtqGQ=s180-rw', 'https://play.google.com/store/apps/details?id=com.hybrid.plocker')
+    window.plugins.socialsharing.share('Password Locker App that lets you lock Important Information ! No Need of Internet Connection', 'Password Locker App', "../../assets/icon/logo.png", 'https://bit.ly/2ycLtvz')
 
   }
 
-  Callagain(url){
+  Callagain(url) {
     console.log(url)
-    if(url == '/list'){
+    if (url == '/list') {
       this.events.publish('callagain')
-    } 
+    }
   }
 }
